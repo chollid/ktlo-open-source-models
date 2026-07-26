@@ -1,0 +1,32 @@
+# watchlist.yaml
+poll_hours: 3
+smoke_test_repo: hf-internal-testing/tiny-random-gpt2
+targets:
+  # base weights = the reliable archival anchor
+  - author: moonshotai
+    include: ["Kimi-K3", "Kimi-K2.7", "Kimi-K2.6"]
+    priority: base
+  # abliteration maintainers seen in the wild (verify before trusting)
+  - author: huihui-ai
+    include: ["Kimi-K3", "GLM-5", "Qwen3"]
+    priority: abliterated
+  - author: DavidAU
+    include: ["Kimi-K3", "GLM-5", "Heretic"]
+    priority: abliterated
+  - author: Youssofal
+    include: ["Kimi-K3", "Heretic"]
+    priority: abliterated
+  - author: audnai
+    include: ["Kimi-K3"]
+    priority: abliterated
+  # other frontier bases worth mirroring
+  - author: zai-org           # GLM
+    include: ["GLM-5"]
+    priority: base
+  - author: deepseek-ai
+    include: ["V4"]
+    priority: base
+quality_gates:            # applied to abliterated repos before auto-grab
+  min_downloads: 50       # skip brand-new zero-signal uploads
+  require_method: ["heretic", "abliterat"]   # name/card must mention a known method
+  prefer_safetensors_over_gguf: true         # for archival fidelity
