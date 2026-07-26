@@ -1,0 +1,168 @@
+name: Grab model
+
+on:
+  repository_dispatch:
+    types: [grab-model]
+  workflow_dispatch:
+    inputs:
+      repo_id:
+        description: Hugging Face repository ID
+        required: true
+        type: string
+      revision:
+        description: Immutable 40-character commit SHA
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      skip: ${{ steps.plan.outputs.skip }}
+      safe_name: ${{ steps.identity.outputs.safe_name }}
+      repo_id: ${{ steps.identity.outputs.repo_id }}
+      revision: ${{ steps.identity.outputs.revision }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - id: identity
+        env:
+          REPO_ID: ${{ github.event.client_payload.repo_id || inputs.repo_id }}
+          REVISION: ${{ github.event.client_payload.revision || inputs.revision }}
+        run: |
+          python - "$GITHUB_OUTPUT" <<'PY'
+          import os
+          import re
+          import sys
+
+          repo_id = os.environ["REPO_ID"]
+          revision = os.environ["REVISION"]
+          if not repo_id or not re.fullmatch(r"[0-9a-fA-F]{40}", revision):
+              raise SystemExit("repo_id and an immutable revision SHA are required")
+          with open(sys.argv[1], "a", encoding="utf-8") as output:
+              output.write(f"repo_id={repo_id}\n")
+              output.write(f"revision={revision.lower()}\n")
+              output.write(f"safe_name={repo_id.replace('/', '__')}\n")
+          PY
+      - id: plan
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python plan_shards.py --safe-name "${{ steps.identity.outputs.safe_name }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shard-plan
+          path: shards/
+          if-no-files-found: error
+          retention-days: 2
+
+  grab:
+    needs: plan
+    if: needs.plan.outputs.skip != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
+        with:
+          name: shard-plan
+          path: shards
+      - name: Install rclone 1.74.4
+        run: |
+          curl -fsSLO https://downloads.rclone.org/v1.74.4/rclone-v1.74.4-linux-amd64.zip
+          unzip -q rclone-v1.74.4-linux-amd64.zip
+          sudo install -m 0755 rclone-v1.74.4-linux-amd64/rclone /usr/local/bin/rclone
+      - name: Stream shard
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          SHARD_PLAN_FILE: shards/${{ needs.plan.outputs.safe_name }}.json
+        run: |
+          bash grab_shard.sh \
+            "shards/shard-${{ matrix.shard }}.json" \
+            "${{ needs.plan.outputs.repo_id }}" \
+            "${{ needs.plan.outputs.revision }}" \
+            "${{ needs.plan.outputs.safe_name }}"
+      - name: Upload shard result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shard-${{ matrix.shard }}-result
+          path: shard-${{ matrix.shard }}-result.json
+          if-no-files-found: error
+          retention-days: 2
+
+  collect:
+    needs: [plan, grab]
+    if: always() && needs.plan.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: state-write
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          name: shard-plan
+          path: shards
+      - uses: actions/download-artifact@v4
+        if: needs.plan.outputs.skip != 'true'
+        continue-on-error: true
+        with:
+          pattern: shard-*-result
+          path: shard-results
+          merge-multiple: true
+      - id: collect
+        env:
+          NOTIFY_WEBHOOK: ${{ secrets.NOTIFY_WEBHOOK }}
+        run: |
+          mkdir -p shard-results
+          python collect_shards.py \
+            --safe-name "${{ needs.plan.outputs.safe_name }}" \
+            --plan-file "shards/${{ needs.plan.outputs.safe_name }}.json" \
+            --results-dir shard-results
+      - name: Commit state once
+        env:
+          SAFE_NAME: ${{ needs.plan.outputs.safe_name }}
+        run: |
+          git config user.name "model-archive-bot"
+          git config user.email "model-archive-bot@users.noreply.github.com"
+          git add "state/jobs/${SAFE_NAME}.json"
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "state: collect grab results for ${SAFE_NAME}"
+          git pull --rebase
+          git push
+      - name: Write summary
+        run: |
+          {
+            echo "### Grab result"
+            echo "- Uploaded: ${{ steps.collect.outputs.uploaded }}"
+            echo "- Failed: ${{ steps.collect.outputs.failed }}"
+            echo "- Remaining: ${{ steps.collect.outputs.remaining }}"
+          } >>"$GITHUB_STEP_SUMMARY"
