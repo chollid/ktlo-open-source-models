@@ -280,3 +280,104 @@ state/jobs/*.json
 tests/
 README.md
 ```
+
+---
+
+## 9. Operator decisions (locked 2026-07-26)
+
+These are settled. Do not re-litigate them in implementation.
+
+### 9.1 What gets archived
+
+| Artifact | Size | Purpose |
+|---|---|---|
+| **FP8 base safetensors** | ~2.8 TB | Preservation anchor. Likely the native release dtype (K2 and DeepSeek-V3 precedent). Every future quantization derives from it. |
+| **Q4_K_M GGUF** (abliterated, once verified) | ~1.6 TB | The runnable artifact. Loads on a ~$9k dual-EPYC / 2 TB DDR4 box at ~3-10 tok/s. |
+
+**BF16 is NEVER archived. Unconditional. No escape hatch, no auto-override.**
+
+Operator decision, 2026-07-26. Rationale: K2 and DeepSeek-V3 both shipped FP8 natively,
+so a BF16 K3 artifact is most likely an upcast carrying zero extra information at 2x the
+bytes. Neither precision is runnable on attainable hardware, and Q4 derives from FP8 just
+as well. BF16 must never be grabbed automatically under any condition.
+
+### MANDATORY GUARD — empty-weight-set detection
+
+An unconditional BF16 exclusion has one silent failure mode: if K3 ships **BF16-only**
+(as Llama and Qwen do), the filter drops every weight file and the pipeline archives
+`config.json`, the tokenizer, and nothing else — a "successful" job containing no model.
+
+Therefore: **if file filtering leaves zero weight-like files** (`.safetensors`, `.gguf`,
+`.bin`, `.pt`), the job MUST NOT be dispatched. Set status `failed` and notify:
+
+    "<repo_id>: no FP8 weights after filtering — appears BF16-only.
+     Human decision required. Weight files seen: <list of dropped weight filenames>."
+
+Include the dropped filenames so the operator can see what was actually published.
+Never resolve this automatically — archiving 5.6 TB is a deliberate human choice.
+
+The watcher should still surface the repo's declared dtype in its notification so the
+operator can confirm what was published.
+
+Total ~4.4 TB, targeting an 8 TB drive.
+
+### 9.2 FILE-LEVEL FILTERING — required, not optional
+
+The pipeline archives every file in a matched repo. For GGUF repos that is catastrophic:
+quantization uploaders conventionally ship EVERY quant level in ONE repo (IQ2, Q3_K_M,
+Q4_K_M, Q5_K_M, Q6_K, Q8_0 ...). At K3 scale that single repo is 10-15 TB. Some base
+repos likewise ship FP8 and BF16 side by side, silently doubling to 8.4 TB.
+
+The disk-free streaming grabber has no point at which a human notices this. Filtering
+must therefore happen in the watcher, before `set_files` is called.
+
+Add to each `watchlist.yaml` target:
+
+```yaml
+file_rules:
+  always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
+  include: ["*Q4_K_M*"]        # weight files must match one of these (empty = all)
+  exclude: ["*bf16*", "*BF16*"]  # applied after include
+max_total_bytes: 4_000_000_000_000   # hard sanity gate, see below
+```
+
+Rules:
+- `always_keep` matches bypass include/exclude entirely (config, tokenizer, small metadata).
+  These are tiny and always wanted.
+- Weight-like files (`*.safetensors`, `*.gguf`, `*.bin`, `*.pt`) are subject to
+  include/exclude.
+- Patterns are globs and are naturally prefix-aware, so `*Q4_K_M*` keeps all parts of a
+  split (`...-Q4_K_M-00007-of-00024.gguf`) and no parts of `Q5_K_M`. Verify this with a
+  test using realistic split filenames.
+- **Split-set integrity check:** if a filter would keep only SOME parts of an
+  `-NNNNN-of-MMMMM` set, that is a bug in the pattern. Detect it and fail loudly rather
+  than archive an unusable partial set.
+
+### 9.3 Size sanity gate
+
+Before dispatching a grab, compare post-filter `total_bytes` against `max_total_bytes`.
+If it exceeds, do NOT dispatch: set the job to `failed`, notify with the computed size and
+the top ten largest files, and require a human to widen the limit deliberately.
+
+Rationale: the cost of a wrong filter is a five-figure R2 bill and a full drive, discovered
+days later. The cost of a false alarm is one manual re-run.
+
+### 9.4 Pull defaults
+
+Nightly budget is the DEFAULT, not an opt-in. Runbook and examples should show:
+- `--max-transfer 500G` per night, `--cutoff-mode CAUTIOUS`
+- daytime bandwidth throttle: `--bwlimit "08:00,20M 23:00,off"`
+- ~6 nights for 2.8 TB; adds roughly $10-20 in R2 storage versus a flat-out pull
+Reason: avoid tripping ISP traffic-management on an "unlimited" plan.
+
+### 9.5 Alerts
+
+`NOTIFY_WEBHOOK` is an **ntfy.sh** topic URL (`https://ntfy.sh/<random-topic>`).
+Notes for the runbook: no account needed; the topic name is the only secret, so it must be
+random; anyone who knows it can read the alerts. Alerts may contain repo names and byte
+counts and must NEVER contain credentials.
+
+### 9.6 Abliteration gate
+
+Keep `min_downloads: 50` plus `require_method`. Base-priority targets continue to bypass
+gates entirely for first-mover capture.

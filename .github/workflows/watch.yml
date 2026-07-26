@@ -1,0 +1,66 @@
+name: Watch Hugging Face
+
+on:
+  schedule:
+    - cron: "0 */3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: state-write
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install watcher dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Poll, persist state, then dispatch
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DISPATCH_PAT: ${{ secrets.DISPATCH_PAT }}
+          NOTIFY_WEBHOOK: ${{ secrets.NOTIFY_WEBHOOK }}
+        run: python watcher.py
+      - name: Confirm state has no uncommitted fallback changes
+        run: |
+          git add state/
+          if git diff --cached --quiet; then
+            echo "Watcher state is already committed and pushed."
+            exit 0
+          fi
+          git config user.name "model-archive-bot"
+          git config user.email "model-archive-bot@users.noreply.github.com"
+          git commit -m "state: persist watcher fallback"
+          git pull --rebase
+          git push
+      - name: Document state-push requirement
+        if: failure()
+        run: |
+          {
+            echo "### Watcher failure"
+            echo "If the state push was blocked, allow GitHub Actions read/write"
+            echo "workflow permissions and permit github-actions[bot] to push"
+            echo "through the default branch protection rule. The watcher fails"
+            echo "closed and will not dispatch until state is in repository history."
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Notify on failure
+        if: failure()
+        env:
+          NOTIFY_WEBHOOK: ${{ secrets.NOTIFY_WEBHOOK }}
+        run: |
+          python - <<'PY'
+          from lib.notify import notify
+
+          notify("Hugging Face watcher workflow failed; inspect the Actions run.", level="error")
+          PY

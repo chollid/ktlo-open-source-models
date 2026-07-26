@@ -2,31 +2,50 @@
 poll_hours: 3
 smoke_test_repo: hf-internal-testing/tiny-random-gpt2
 targets:
-  # base weights = the reliable archival anchor
+  # Preservation anchor: keep FP8 weights; BF16 is excluded unconditionally.
   - author: moonshotai
-    include: ["Kimi-K3", "Kimi-K2.7", "Kimi-K2.6"]
+    include: ["Kimi-K3"]
     priority: base
-  # abliteration maintainers seen in the wild (verify before trusting)
+    file_rules:
+      always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
+      include: []
+      exclude: ["*bf16*", "*BF16*"]
+    max_total_bytes: 4_000_000_000_000
+
+  # Runnable artifacts: archive Q4_K_M only from each matching GGUF repo.
   - author: huihui-ai
-    include: ["Kimi-K3", "GLM-5", "Qwen3"]
+    include: ["Kimi-K3"]
     priority: abliterated
+    file_rules:
+      always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
+      include: ["*Q4_K_M*"]
+      exclude: []
+    max_total_bytes: 2_000_000_000_000
   - author: DavidAU
-    include: ["Kimi-K3", "GLM-5", "Heretic"]
+    include: ["Kimi-K3"]
     priority: abliterated
+    file_rules:
+      always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
+      include: ["*Q4_K_M*"]
+      exclude: []
+    max_total_bytes: 2_000_000_000_000
   - author: Youssofal
-    include: ["Kimi-K3", "Heretic"]
+    include: ["Kimi-K3"]
     priority: abliterated
+    file_rules:
+      always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
+      include: ["*Q4_K_M*"]
+      exclude: []
+    max_total_bytes: 2_000_000_000_000
   - author: audnai
     include: ["Kimi-K3"]
     priority: abliterated
-  # other frontier bases worth mirroring
-  - author: zai-org           # GLM
-    include: ["GLM-5"]
-    priority: base
-  - author: deepseek-ai
-    include: ["V4"]
-    priority: base
-quality_gates:            # applied to abliterated repos before auto-grab
-  min_downloads: 50       # skip brand-new zero-signal uploads
-  require_method: ["heretic", "abliterat"]   # name/card must mention a known method
-  prefer_safetensors_over_gguf: true         # for archival fidelity
+    file_rules:
+      always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
+      include: ["*Q4_K_M*"]
+      exclude: []
+    max_total_bytes: 2_000_000_000_000
+
+quality_gates:
+  min_downloads: 50
+  require_method: ["heretic", "abliterat"]
