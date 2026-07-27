@@ -1,0 +1,1049 @@
+name: End-to-end archive smoke test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: model-archive-smoke-prefix
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      REPO_ID: hf-internal-testing/tiny-random-gpt2
+      SAFE_NAME: hf-internal-testing__tiny-random-gpt2
+      PYTHONUNBUFFERED: "1"
+
+    steps:
+      - name: Fail fast if a required secret is missing
+        id: secrets
+        shell: bash
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          NOTIFY_WEBHOOK: ${{ secrets.NOTIFY_WEBHOOK }}
+        run: |
+          set -euo pipefail
+          missing=0
+          for secret_name in \
+            HF_TOKEN \
+            R2_ACCESS_KEY_ID \
+            R2_SECRET_ACCESS_KEY \
+            R2_ACCOUNT_ID \
+            R2_BUCKET \
+            NOTIFY_WEBHOOK
+          do
+            if [[ -z ${!secret_name:-} ]]; then
+              echo "::error title=Missing required secret::ERROR: required GitHub Actions secret ${secret_name} is missing or empty"
+              missing=1
+            fi
+          done
+          if ((missing != 0)); then
+            exit 1
+          fi
+          echo "All required smoke-test secrets are present."
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Install rclone 1.74.4
+        run: |
+          set -euo pipefail
+          curl -fsSLO https://downloads.rclone.org/v1.74.4/rclone-v1.74.4-linux-amd64.zip
+          unzip -q rclone-v1.74.4-linux-amd64.zip
+          sudo install -m 0755 rclone-v1.74.4-linux-amd64/rclone /usr/local/bin/rclone
+          rclone version | grep -F "rclone v1.74.4"
+
+      - name: Configure private R2 smoke prefix
+        id: rclone
+        shell: bash
+        env:
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+        run: |
+          set -euo pipefail
+          config_path="${RUNNER_TEMP}/rclone.conf"
+          umask 077
+          {
+            printf '%s\n' '[r2]'
+            printf '%s\n' 'type = s3'
+            printf '%s\n' 'provider = Cloudflare'
+            printf 'access_key_id = %s\n' "$R2_ACCESS_KEY_ID"
+            printf 'secret_access_key = %s\n' "$R2_SECRET_ACCESS_KEY"
+            printf 'endpoint = https://%s.r2.cloudflarestorage.com\n' "$R2_ACCOUNT_ID"
+            printf '%s\n' 'acl = private'
+            printf '%s\n' 'no_check_bucket = true'
+          } >"$config_path"
+          chmod 600 "$config_path"
+          {
+            printf 'RCLONE_CONFIG=%s\n' "$config_path"
+            printf 'R2_BUCKET_BASE=%s\n' "${R2_BUCKET%/}"
+            printf 'SMOKE_BUCKET=%s/smoke\n' "${R2_BUCKET%/}"
+            printf 'R2_BUCKET=%s/smoke\n' "${R2_BUCKET%/}"
+          } >>"$GITHUB_ENV"
+          date +%s%N >"${RUNNER_TEMP}/smoke-start-ns"
+
+      - name: Remove stale smoke objects before starting
+        run: |
+          set -euo pipefail
+          if [[ \
+            -z ${SMOKE_BUCKET:-} || \
+            -z ${R2_BUCKET_BASE:-} || \
+            $SMOKE_BUCKET != */smoke || \
+            $SMOKE_BUCKET == "$R2_BUCKET_BASE" \
+          ]]; then
+            echo "::error title=Unsafe smoke purge target::ERROR: refusing R2 smoke purge; target must end in /smoke and differ from the bare bucket"
+            exit 1
+          fi
+          rclone purge "r2:${SMOKE_BUCKET}" 2>/dev/null || {
+            status=$?
+            if ((status != 3)); then
+              echo "::error::Could not clear the stale R2 smoke prefix (rclone exit ${status})."
+              exit "$status"
+            fi
+          }
+          echo "The isolated R2 smoke prefix is clean."
+
+      - name: Resolve live Hugging Face metadata and create valid state
+        id: metadata
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          set -euo pipefail
+          python - "$GITHUB_OUTPUT" <<'PY'
+          import os
+          import sys
+
+          from lib import hfmeta, state
+
+          output_path = sys.argv[1]
+          repo_id = os.environ["REPO_ID"]
+          revision = hfmeta.resolve_revision(repo_id, "main", os.environ["HF_TOKEN"])
+          files = hfmeta.list_repo_files(repo_id, revision, os.environ["HF_TOKEN"])
+
+          if not files:
+              raise SystemExit("SMOKE ASSERTION FAILED: Hugging Face returned no files")
+          if not all(
+              isinstance(item["size"], int) and item["size"] >= 0 for item in files
+          ):
+              raise SystemExit(
+                  "SMOKE ASSERTION FAILED: at least one Hugging Face file has no size"
+              )
+
+          lfs_hashes = [
+              item for item in files if item["lfs"] and item["sha256"] is not None
+          ]
+          job = state.create(repo_id, revision, "base")
+          state.set_files(job, files)
+          state.save(job)
+          reloaded = state.load(job["safe_name"])
+          if reloaded is None or reloaded != job:
+              raise SystemExit(
+                  "SMOKE ASSERTION FAILED: saved job state did not validate and reload"
+              )
+
+          total_bytes = sum(item["size"] for item in files)
+          with open(output_path, "a", encoding="utf-8") as output:
+              output.write(f"revision={revision}\n")
+              output.write(f"total_files={len(files)}\n")
+              output.write(f"total_bytes={total_bytes}\n")
+              output.write(
+                  f"lfs_sha256_exposed={'yes' if lfs_hashes else 'no'}\n"
+              )
+              output.write(f"lfs_sha256_count={len(lfs_hashes)}\n")
+
+          print(
+              "HF metadata assertion passed: "
+              f"{len(files)} files, {total_bytes} bytes, revision {revision}"
+          )
+          print(
+              "LIVE HF API LFS SHA256 EXPOSED: "
+              f"{'yes' if lfs_hashes else 'no'} ({len(lfs_hashes)} file(s))"
+          )
+          PY
+
+      - name: Plan real upload shards
+        id: plan
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          set -euo pipefail
+          rm -rf shards shard-results
+          mkdir -p shard-results
+          python plan_shards.py --safe-name "$SAFE_NAME"
+
+      - name: Assert the shard matrix and manifests
+        env:
+          MATRIX: ${{ steps.plan.outputs.matrix }}
+          SKIP: ${{ steps.plan.outputs.skip }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          matrix = json.loads(os.environ["MATRIX"])
+          shards = matrix.get("shard")
+          if (
+              not isinstance(shards, list)
+              or shards != list(range(len(shards)))
+              or not shards
+          ):
+              raise SystemExit(
+                  f"SMOKE ASSERTION FAILED: invalid shard matrix {matrix!r}"
+              )
+          if os.environ["SKIP"] != "false":
+              raise SystemExit("SMOKE ASSERTION FAILED: non-empty model was skipped")
+          if shards != [0]:
+              raise SystemExit(
+                  f"SMOKE ASSERTION FAILED: tiny model should use one shard, got {shards}"
+              )
+
+          state_file = Path("state/jobs") / f"{os.environ['SAFE_NAME']}.json"
+          planned = json.loads(state_file.read_text(encoding="utf-8"))
+          expected = set(planned["files"])
+          manifested = set()
+          for index in shards:
+              paths = json.loads(
+                  Path(f"shards/shard-{index}.json").read_text(encoding="utf-8")
+              )
+              if not isinstance(paths, list) or not paths:
+                  raise SystemExit(
+                      f"SMOKE ASSERTION FAILED: shard {index} is empty or invalid"
+                  )
+              if manifested.intersection(paths):
+                  raise SystemExit(
+                      "SMOKE ASSERTION FAILED: a file appears in multiple shards"
+                  )
+              manifested.update(paths)
+          if manifested != expected:
+              raise SystemExit(
+                  "SMOKE ASSERTION FAILED: shard manifests do not cover the job"
+              )
+          print(f"Shard matrix assertion passed: {matrix}")
+          PY
+
+      - name: Stream the real shard to R2 and measure aggregate peak RSS
+        id: grab
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          RESULT_DIR: shard-results
+          SHARD_PLAN_FILE: shards/hf-internal-testing__tiny-random-gpt2.json
+          DURABLE_STATE_FILE: state/jobs/hf-internal-testing__tiny-random-gpt2.json
+          PYTHON_BIN: python
+          RCLONE_BIN: rclone
+          PARALLEL_TRANSFERS: "8"
+          REVISION: ${{ steps.metadata.outputs.revision }}
+        run: |
+          set -euo pipefail
+          python - "$GITHUB_OUTPUT" <<'PY'
+          import os
+          import re
+          import subprocess
+          import sys
+          import time
+          from pathlib import Path
+
+          command = [
+              "bash",
+              "grab_shard.sh",
+              "shards/shard-0.json",
+              os.environ["REPO_ID"],
+              os.environ["REVISION"],
+              os.environ["SAFE_NAME"],
+          ]
+          environment = os.environ.copy()
+          started = time.monotonic()
+          process = subprocess.Popen(command, env=environment)
+          peak_kib = 0
+
+          def aggregate_tree_rss_kib(root_pid: int) -> int:
+              table: dict[int, tuple[int, int]] = {}
+              for status_path in Path("/proc").glob("[0-9]*/status"):
+                  try:
+                      text = status_path.read_text(encoding="utf-8")
+                  except (FileNotFoundError, PermissionError, ProcessLookupError):
+                      continue
+                  ppid_match = re.search(r"^PPid:\s+(\d+)$", text, re.MULTILINE)
+                  rss_match = re.search(
+                      r"^VmRSS:\s+(\d+)\s+kB$", text, re.MULTILINE
+                  )
+                  if ppid_match is None:
+                      continue
+                  pid = int(status_path.parent.name)
+                  table[pid] = (
+                      int(ppid_match.group(1)),
+                      int(rss_match.group(1)) if rss_match else 0,
+                  )
+
+              descendants = {root_pid}
+              changed = True
+              while changed:
+                  changed = False
+                  for pid, (ppid, _rss) in table.items():
+                      if ppid in descendants and pid not in descendants:
+                          descendants.add(pid)
+                          changed = True
+              return sum(table.get(pid, (0, 0))[1] for pid in descendants)
+
+          while process.poll() is None:
+              peak_kib = max(peak_kib, aggregate_tree_rss_kib(process.pid))
+              time.sleep(0.02)
+          peak_kib = max(peak_kib, aggregate_tree_rss_kib(process.pid))
+          return_code = process.wait()
+          elapsed = time.monotonic() - started
+
+          with open(sys.argv[1], "a", encoding="utf-8") as output:
+              output.write(f"peak_rss_kib={peak_kib}\n")
+              output.write(f"wall_seconds={elapsed:.6f}\n")
+          print(
+              "MEASURED AGGREGATE PEAK RSS: "
+              f"{peak_kib} KiB ({peak_kib / 1024 / 1024:.3f} GiB)"
+          )
+          print(f"MEASURED GRAB WALL TIME: {elapsed:.3f} seconds")
+          if peak_kib > 4 * 1024 * 1024:
+              print(
+                  "::warning title=Smoke RSS exceeded 4 GiB::"
+                  "Aggregate process-tree peak RSS exceeded the 4 GiB alert threshold."
+              )
+          if return_code != 0:
+              raise SystemExit(
+                  f"SMOKE ASSERTION FAILED: grab_shard.sh exited {return_code}"
+              )
+          PY
+
+      - name: Assert every in-stream upload result
+        env:
+          REVISION: ${{ steps.metadata.outputs.revision }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          safe_name = "hf-internal-testing__tiny-random-gpt2"
+          job = json.loads(
+              (Path("state/jobs") / f"{safe_name}.json").read_text(
+                  encoding="utf-8"
+              )
+          )
+          expected = set(job["files"])
+          results = {}
+          for result_file in sorted(
+              Path("shard-results").glob("shard-*-result.json")
+          ):
+              payload = json.loads(result_file.read_text(encoding="utf-8"))
+              overlap = set(results).intersection(payload)
+              if overlap:
+                  raise SystemExit(
+                      f"SMOKE ASSERTION FAILED: duplicate results for {sorted(overlap)}"
+                  )
+              results.update(payload)
+          if set(results) != expected:
+              raise SystemExit(
+                  "SMOKE ASSERTION FAILED: upload results do not cover every file"
+              )
+
+          for path, result in results.items():
+              observed = result.get("sha256_observed")
+              if (
+                  result.get("uploaded") is not True
+                  or result.get("error") is not None
+                  or not isinstance(observed, str)
+                  or re.fullmatch(r"[0-9a-fA-F]{64}", observed) is None
+              ):
+                  raise SystemExit(
+                      f"SMOKE ASSERTION FAILED: upload failed for {path}: {result!r}"
+                  )
+              declared = job["files"][path]["sha256"]
+              if declared is not None and observed.lower() != declared.lower():
+                  raise SystemExit(
+                      f"SMOKE ASSERTION FAILED: in-stream SHA256 mismatch for {path}"
+                  )
+          print(
+              f"Upload result assertion passed for all {len(expected)} file(s)."
+          )
+          PY
+
+      - name: Collect shard state
+        id: collect
+        run: |
+          set -euo pipefail
+          python collect_shards.py \
+            --safe-name "$SAFE_NAME" \
+            --plan-file "shards/${SAFE_NAME}.json" \
+            --results-dir shard-results
+          python - <<'PY'
+          from lib import state
+
+          job = state.load("hf-internal-testing__tiny-random-gpt2")
+          if job is None:
+              raise SystemExit("SMOKE ASSERTION FAILED: collected state is missing")
+          if job["status"] != "verifying":
+              raise SystemExit(
+                  f"SMOKE ASSERTION FAILED: collected status is {job['status']!r}"
+              )
+          if not all(item["uploaded"] for item in job["files"].values()):
+              raise SystemExit(
+                  "SMOKE ASSERTION FAILED: collect did not mark every file uploaded"
+              )
+          print("Collect assertion passed: every file is uploaded.")
+          PY
+
+      - name: Assert the real sweeper is converged and dispatches nothing
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          set -euo pipefail
+          python sweeper.py --dry-run | tee "${RUNNER_TEMP}/positive-sweep.log"
+          if grep -Eq \
+            '  (MISSING|SIZE_MISMATCH|RECOVER_FROM_R2)|ORPHAN OBJECT|would dispatch' \
+            "${RUNNER_TEMP}/positive-sweep.log"
+          then
+            echo "::error::SMOKE ASSERTION FAILED: sweeper did not fully converge."
+            exit 1
+          fi
+          grep -Fq "DRY RUN: would byte-verify:" \
+            "${RUNNER_TEMP}/positive-sweep.log"
+          echo "Sweeper assertion passed: fully converged, recovery dispatches=0."
+
+      - name: Byte-verify every real R2 object
+        id: verify
+        run: |
+          set -euo pipefail
+          python verify_remote.py --safe-name "$SAFE_NAME" \
+            | tee "${RUNNER_TEMP}/positive-verify.log"
+          if grep -Fq "MISMATCH " "${RUNNER_TEMP}/positive-verify.log"; then
+            echo "::error::SMOKE ASSERTION FAILED: positive verification found a mismatch."
+            exit 1
+          fi
+
+      - name: Assert the job reached verified
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from lib import state
+
+          job = state.load("hf-internal-testing__tiny-random-gpt2")
+          if job is None or job["status"] != "verified":
+              observed = None if job is None else job["status"]
+              raise SystemExit(
+                  f"SMOKE ASSERTION FAILED: expected verified, observed {observed!r}"
+              )
+          if not all(
+              item["uploaded"] and item["verified"]
+              for item in job["files"].values()
+          ):
+              raise SystemExit(
+                  "SMOKE ASSERTION FAILED: verified state contains an incomplete file"
+              )
+          print("Verified-state assertion passed.")
+          PY
+
+      - name: Select deterministic negative-test targets
+        id: targets
+        run: |
+          set -euo pipefail
+          python - "$GITHUB_OUTPUT" <<'PY'
+          import sys
+
+          from lib import state
+
+          job = state.load("hf-internal-testing__tiny-random-gpt2")
+          if job is None:
+              raise SystemExit("SMOKE ASSERTION FAILED: state is missing")
+          paths = sorted(job["files"])
+          lfs_paths = [
+              path
+              for path in paths
+              if job["files"][path]["sha256"] is not None
+          ]
+          if not lfs_paths:
+              raise SystemExit(
+                  "SMOKE ASSERTION FAILED: live HF API exposed no LFS SHA256; "
+                  "same-length corruption cannot be detected by L5"
+              )
+          with open(sys.argv[1], "a", encoding="utf-8") as output:
+              output.write(f"missing={paths[0]}\n")
+              output.write(f"corrupt={lfs_paths[0]}\n")
+          PY
+
+      - name: "Negative L4: delete one object and capture exactly one dispatch"
+        id: negative_missing
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          MISSING_TARGET: ${{ steps.targets.outputs.missing }}
+        run: |
+          set -euo pipefail
+          rclone deletefile \
+            "r2:${SMOKE_BUCKET}/${SAFE_NAME}/${MISSING_TARGET}"
+          python - <<'PY'
+          import os
+
+          from lib import state
+          from sweeper import sweep_jobs
+          from watcher import _load_config
+
+          safe_name = os.environ["SAFE_NAME"]
+          target = os.environ["MISSING_TARGET"]
+          original = state.load(safe_name)
+          if original is None or original["status"] != "verified":
+              raise SystemExit(
+                  "SMOKE ASSERTION FAILED: L4 injection did not start from verified"
+              )
+
+          # The frozen sweeper intentionally skips terminal jobs. Reconstruct a
+          # schema-valid pre-verification view through lib.state so the deleted
+          # object itself, rather than a hand-edited flag, drives the L4 diff.
+          metadata = [
+              {
+                  "path": path,
+                  "size": item["size"],
+                  "sha256": item["sha256"],
+                  "lfs": item["lfs"],
+              }
+              for path, item in original["files"].items()
+          ]
+          reopened = state.create(
+              original["repo_id"], original["revision"], original["priority"]
+          )
+          state.set_files(reopened, metadata)
+          for path, item in reopened["files"].items():
+              state.mark_uploaded(
+                  reopened, path, item["sha256"] or ("0" * 64)
+              )
+          state.save(reopened)
+
+          dispatches = []
+
+          def capture_dispatch(repository, token, payload):
+              dispatches.append((repository, token, dict(payload)))
+
+          summary = sweep_jobs(
+              [reopened],
+              config=_load_config(),
+              bucket=os.environ["R2_BUCKET"],
+              rclone_bin=os.environ.get("RCLONE_BIN", "rclone"),
+              hf_token=os.environ["HF_TOKEN"],
+              github_repository=os.environ["GITHUB_REPOSITORY"],
+              dispatch_token="smoke-dispatch-capture",
+              dispatch=capture_dispatch,
+          )
+          reloaded = state.load(safe_name)
+          pending = [] if reloaded is None else state.pending_uploads(reloaded)
+          if pending != [target]:
+              raise SystemExit(
+                  f"SMOKE ASSERTION FAILED: expected only {target!r}, got {pending!r}"
+              )
+          if summary.dispatched_jobs != 1 or len(dispatches) != 1:
+              raise SystemExit(
+                  "SMOKE ASSERTION FAILED: sweeper did not emit exactly one dispatch"
+              )
+          expected_payload = {
+              "repo_id": original["repo_id"],
+              "revision": original["revision"],
+          }
+          if dispatches[0][2] != expected_payload:
+              raise SystemExit(
+                  f"SMOKE ASSERTION FAILED: wrong recovery payload {dispatches[0][2]!r}"
+              )
+          print(
+              "L4 NEGATIVE ASSERTION PASSED: one missing object produced "
+              "one dispatch with exactly one pending file."
+          )
+          PY
+
+      - name: Recover the deleted object through plan, grab, collect, and verify
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          MISSING_TARGET: ${{ steps.targets.outputs.missing }}
+          RESULT_DIR: shard-results
+          PYTHON_BIN: python
+          RCLONE_BIN: rclone
+        run: |
+          set -euo pipefail
+          rm -rf shards shard-results
+          mkdir -p shard-results
+          python plan_shards.py --safe-name "$SAFE_NAME"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          manifest = json.loads(
+              Path("shards/shard-0.json").read_text(encoding="utf-8")
+          )
+          if manifest != [os.environ["MISSING_TARGET"]]:
+              raise SystemExit(
+                  f"SMOKE ASSERTION FAILED: recovery shard was {manifest!r}"
+              )
+          PY
+          SHARD_PLAN_FILE="shards/${SAFE_NAME}.json" \
+            bash grab_shard.sh \
+              "shards/shard-0.json" \
+              "$REPO_ID" \
+              "${{ steps.metadata.outputs.revision }}" \
+              "$SAFE_NAME"
+          python collect_shards.py \
+            --safe-name "$SAFE_NAME" \
+            --plan-file "shards/${SAFE_NAME}.json" \
+            --results-dir shard-results
+          python verify_remote.py --safe-name "$SAFE_NAME"
+          python - <<'PY'
+          from lib import state
+
+          job = state.load("hf-internal-testing__tiny-random-gpt2")
+          if job is None or job["status"] != "verified":
+              raise SystemExit(
+                  "SMOKE ASSERTION FAILED: L4 recovery did not return to verified"
+              )
+          print("L4 RECOVERY ASSERTION PASSED.")
+          PY
+
+      - name: "Negative L5: overwrite one object with same-length wrong bytes"
+        id: negative_corrupt
+        env:
+          CORRUPT_TARGET: ${{ steps.targets.outputs.corrupt }}
+        run: |
+          set -euo pipefail
+          python - "${RUNNER_TEMP}/corruption.json" <<'PY'
+          import hashlib
+          import json
+          import os
+          import sys
+
+          from lib import state
+
+          job = state.load(os.environ["SAFE_NAME"])
+          if job is None or job["status"] != "verified":
+              raise SystemExit(
+                  "SMOKE ASSERTION FAILED: L5 injection did not start from verified"
+              )
+          target = os.environ["CORRUPT_TARGET"]
+          metadata = job["files"][target]
+          size = metadata["size"]
+          expected = metadata["sha256"]
+          if expected is None:
+              raise SystemExit(
+                  "SMOKE ASSERTION FAILED: corruption target has no LFS SHA256"
+              )
+          chosen = None
+          for byte in (0, 165, 255):
+              digest = hashlib.sha256(bytes([byte]) * size).hexdigest()
+              if digest != expected.lower():
+                  chosen = byte
+                  break
+          if chosen is None:
+              raise SystemExit(
+                  "SMOKE ASSERTION FAILED: could not construct wrong same-length bytes"
+              )
+          with open(sys.argv[1], "w", encoding="utf-8") as output:
+              json.dump({"size": size, "byte": chosen}, output)
+          PY
+          size=$(python -c \
+            'import json,sys; print(json.load(open(sys.argv[1]))["size"])' \
+            "${RUNNER_TEMP}/corruption.json")
+          byte=$(python -c \
+            'import json,sys; print(json.load(open(sys.argv[1]))["byte"])' \
+            "${RUNNER_TEMP}/corruption.json")
+          python -c \
+            'import sys; size=int(sys.argv[1]); byte=int(sys.argv[2]); sys.stdout.buffer.write(bytes([byte]) * size)' \
+            "$size" "$byte" \
+            | rclone rcat \
+                "r2:${SMOKE_BUCKET}/${SAFE_NAME}/${CORRUPT_TARGET}" \
+                --size "$size" \
+                --s3-chunk-size 64M \
+                --s3-upload-concurrency 4
+
+          python - <<'PY'
+          import os
+
+          from lib import state
+
+          original = state.load(os.environ["SAFE_NAME"])
+          if original is None:
+              raise SystemExit("SMOKE ASSERTION FAILED: state is missing")
+          metadata = [
+              {
+                  "path": path,
+                  "size": item["size"],
+                  "sha256": item["sha256"],
+                  "lfs": item["lfs"],
+              }
+              for path, item in original["files"].items()
+          ]
+          reopened = state.create(
+              original["repo_id"], original["revision"], original["priority"]
+          )
+          state.set_files(reopened, metadata)
+          for path, item in reopened["files"].items():
+              state.mark_uploaded(
+                  reopened, path, item["sha256"] or ("0" * 64)
+              )
+          state.save(reopened)
+          PY
+
+          python verify_remote.py --safe-name "$SAFE_NAME" \
+            | tee "${RUNNER_TEMP}/negative-corrupt.log"
+          grep -Fq \
+            "MISMATCH ${SAFE_NAME}:${CORRUPT_TARGET} sha256 mismatch" \
+            "${RUNNER_TEMP}/negative-corrupt.log"
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+
+          from lib import state
+
+          safe_name = os.environ["SAFE_NAME"]
+          target = os.environ["CORRUPT_TARGET"]
+          job = state.load(safe_name)
+          if job is None:
+              raise SystemExit("SMOKE ASSERTION FAILED: state is missing")
+          item = job["files"][target]
+          if (
+              item["uploaded"]
+              or item["verified"]
+              or item["attempts"] != 1
+              or "remote verification failed" not in (item["last_error"] or "")
+          ):
+              raise SystemExit(
+                  f"SMOKE ASSERTION FAILED: corrupted file was not reset: {item!r}"
+              )
+
+          result = subprocess.run(
+              [
+                  os.environ.get("RCLONE_BIN", "rclone"),
+                  "lsjson",
+                  f"r2:{os.environ['R2_BUCKET']}/{safe_name}",
+                  "--recursive",
+              ],
+              stdout=subprocess.PIPE,
+              stderr=subprocess.DEVNULL,
+              check=False,
+          )
+          if result.returncode not in (0, 3):
+              raise SystemExit(
+                  f"SMOKE ASSERTION FAILED: R2 inventory exited {result.returncode}"
+              )
+          inventory = [] if result.returncode == 3 else json.loads(result.stdout)
+          if target in {
+              entry["Path"] for entry in inventory if not entry.get("IsDir", False)
+          }:
+              raise SystemExit(
+                  "SMOKE ASSERTION FAILED: mismatched object was not deleted"
+              )
+          print(
+              "L5 NEGATIVE ASSERTION PASSED: mismatch detected, object deleted, "
+              "and file reset."
+          )
+          PY
+
+      - name: Recover the corrupted object and return to verified
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          CORRUPT_TARGET: ${{ steps.targets.outputs.corrupt }}
+          RESULT_DIR: shard-results
+          PYTHON_BIN: python
+          RCLONE_BIN: rclone
+        run: |
+          set -euo pipefail
+          rm -rf shards shard-results
+          mkdir -p shard-results
+          python plan_shards.py --safe-name "$SAFE_NAME"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          manifest = json.loads(
+              Path("shards/shard-0.json").read_text(encoding="utf-8")
+          )
+          if manifest != [os.environ["CORRUPT_TARGET"]]:
+              raise SystemExit(
+                  f"SMOKE ASSERTION FAILED: L5 recovery shard was {manifest!r}"
+              )
+          PY
+          SHARD_PLAN_FILE="shards/${SAFE_NAME}.json" \
+            bash grab_shard.sh \
+              "shards/shard-0.json" \
+              "$REPO_ID" \
+              "${{ steps.metadata.outputs.revision }}" \
+              "$SAFE_NAME"
+          python collect_shards.py \
+            --safe-name "$SAFE_NAME" \
+            --plan-file "shards/${SAFE_NAME}.json" \
+            --results-dir shard-results
+          python verify_remote.py --safe-name "$SAFE_NAME"
+          python - <<'PY'
+          from lib import state
+
+          job = state.load("hf-internal-testing__tiny-random-gpt2")
+          if job is None or job["status"] != "verified":
+              raise SystemExit(
+                  "SMOKE ASSERTION FAILED: L5 recovery did not return to verified"
+              )
+          print("L5 RECOVERY ASSERTION PASSED.")
+          PY
+
+      - name: Exercise the operator pull, verify, and reclaim path
+        id: local
+        env:
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          SMOKE_PULL_BUDGET: 1B
+          MODEL_ARCHIVE_PYTHON: python
+        run: bash scripts/smoke_local.sh
+
+      - name: Always purge and assert the R2 smoke prefix is empty
+        id: cleanup
+        if: always() && steps.rclone.outcome == 'success'
+        run: |
+          if [[ \
+            -z ${SMOKE_BUCKET:-} || \
+            -z ${R2_BUCKET_BASE:-} || \
+            $SMOKE_BUCKET != */smoke || \
+            $SMOKE_BUCKET == "$R2_BUCKET_BASE" \
+          ]]; then
+            echo "::error title=Unsafe smoke purge target::ERROR: refusing R2 smoke purge; target must end in /smoke and differ from the bare bucket"
+            exit 1
+          fi
+          set +e
+          rclone purge "r2:${SMOKE_BUCKET}" >/dev/null 2>&1
+          purge_status=$?
+          listing=$(rclone lsjson "r2:${SMOKE_BUCKET}" --recursive 2>/dev/null)
+          list_status=$?
+          set -e
+
+          if ((purge_status != 0 && purge_status != 3)); then
+            echo "::error::R2 smoke cleanup failed with exit ${purge_status}."
+            exit "$purge_status"
+          fi
+          if ((list_status == 3)); then
+            listing='[]'
+          elif ((list_status != 0)); then
+            echo "::error::R2 smoke cleanup inventory failed with exit ${list_status}."
+            exit "$list_status"
+          fi
+          LISTING="$listing" python - <<'PY'
+          import json
+          import os
+
+          inventory = json.loads(os.environ["LISTING"])
+          objects = [
+              item for item in inventory if not item.get("IsDir", False)
+          ]
+          if objects:
+              raise SystemExit(
+                  f"SMOKE ASSERTION FAILED: cleanup left {len(objects)} object(s)"
+              )
+          PY
+          echo "empty=true" >>"$GITHUB_OUTPUT"
+          echo "Cleanup assertion passed: the R2 smoke prefix is empty."
+
+      - name: Write the complete smoke result and measured rates
+        if: always()
+        env:
+          WORKFLOW_STATUS: ${{ job.status }}
+          REVISION: ${{ steps.metadata.outputs.revision }}
+          TOTAL_BYTES: ${{ steps.metadata.outputs.total_bytes }}
+          TOTAL_FILES: ${{ steps.metadata.outputs.total_files }}
+          LFS_EXPOSED: ${{ steps.metadata.outputs.lfs_sha256_exposed }}
+          LFS_COUNT: ${{ steps.metadata.outputs.lfs_sha256_count }}
+          GRAB_SECONDS: ${{ steps.grab.outputs.wall_seconds }}
+          PEAK_RSS_KIB: ${{ steps.grab.outputs.peak_rss_kib }}
+          MISSING_OUTCOME: ${{ steps.negative_missing.outcome }}
+          CORRUPT_OUTCOME: ${{ steps.negative_corrupt.outcome }}
+          LOCAL_OUTCOME: ${{ steps.local.outcome }}
+          CLEANUP_OUTCOME: ${{ steps.cleanup.outcome }}
+          CLEANUP_EMPTY: ${{ steps.cleanup.outputs.empty }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os
+          import time
+          from pathlib import Path
+
+          start_path = Path(os.environ["RUNNER_TEMP"]) / "smoke-start-ns"
+          wall_seconds = (
+              (time.time_ns() - int(start_path.read_text())) / 1_000_000_000
+              if start_path.exists()
+              else None
+          )
+          total_bytes = int(os.environ["TOTAL_BYTES"] or 0)
+          grab_seconds = float(os.environ["GRAB_SECONDS"] or 0)
+          throughput = total_bytes / grab_seconds if grab_seconds > 0 else None
+          peak_kib = int(os.environ["PEAK_RSS_KIB"] or 0)
+          over_budget = peak_kib > 4 * 1024 * 1024
+
+          summary = Path(os.environ["GITHUB_STEP_SUMMARY"])
+          with summary.open("a", encoding="utf-8") as output:
+              output.write("### End-to-end archive smoke result\n")
+              output.write(f"- Workflow status: {os.environ['WORKFLOW_STATUS']}\n")
+              output.write(
+                  f"- Live HF revision: {os.environ.get('REVISION', 'unavailable')}\n"
+              )
+              output.write(
+                  f"- Live file set: {os.environ['TOTAL_FILES'] or 'unavailable'} "
+                  f"files / {total_bytes} bytes\n"
+              )
+              output.write(
+                  "- Live HF LFS SHA256 exposed: "
+                  f"{os.environ['LFS_EXPOSED'] or 'unavailable'} "
+                  f"({os.environ['LFS_COUNT'] or '0'} file(s))\n"
+              )
+              output.write(
+                  f"- Grab wall time: "
+                  f"{grab_seconds:.3f} seconds\n"
+                  if grab_seconds
+                  else "- Grab wall time: unavailable\n"
+              )
+              output.write(
+                  f"- Observed upload throughput: "
+                  f"{throughput / 1_000_000:.3f} MB/s\n"
+                  if throughput is not None
+                  else "- Observed upload throughput: unavailable\n"
+              )
+              output.write(
+                  f"- Aggregate process-tree peak RSS: {peak_kib} KiB "
+                  f"({peak_kib / 1024 / 1024:.3f} GiB)\n"
+                  if peak_kib
+                  else "- Aggregate process-tree peak RSS: unavailable\n"
+              )
+              output.write(
+                  "- RSS budget check: "
+                  + (
+                      "**WARNING: measured peak exceeded 4 GiB**\n"
+                      if over_budget
+                      else "within the 4 GiB alert threshold\n"
+                  )
+              )
+              output.write(
+                  f"- L4 missing-object test: {os.environ['MISSING_OUTCOME']}\n"
+              )
+              output.write(
+                  f"- L5 same-length corruption test: "
+                  f"{os.environ['CORRUPT_OUTCOME']}\n"
+              )
+              output.write(
+                  f"- Budgeted pull / verify / reclaim: "
+                  f"{os.environ['LOCAL_OUTCOME']}\n"
+              )
+              output.write(
+                  f"- Cleanup: {os.environ['CLEANUP_OUTCOME']}; "
+                  f"prefix empty={os.environ['CLEANUP_EMPTY'] or 'false'}\n"
+              )
+              output.write(
+                  f"- Total measured workflow wall time: "
+                  f"{wall_seconds:.3f} seconds\n"
+                  if wall_seconds is not None
+                  else "- Total measured workflow wall time: unavailable\n"
+              )
+
+          metrics = Path(os.environ["RUNNER_TEMP"]) / "smoke-final-metrics"
+          metrics.write_text(
+              "\n".join(
+                  [
+                      f"wall_seconds={wall_seconds or 0}",
+                      f"throughput_bytes_per_second={throughput or 0}",
+                      f"peak_rss_kib={peak_kib}",
+                  ]
+              )
+              + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Post the full result through the real notification helper
+        if: always() && steps.secrets.outcome == 'success'
+        env:
+          NOTIFY_WEBHOOK: ${{ secrets.NOTIFY_WEBHOOK }}
+          WORKFLOW_STATUS: ${{ job.status }}
+          TOTAL_BYTES: ${{ steps.metadata.outputs.total_bytes }}
+          TOTAL_FILES: ${{ steps.metadata.outputs.total_files }}
+          LFS_EXPOSED: ${{ steps.metadata.outputs.lfs_sha256_exposed }}
+          PEAK_RSS_KIB: ${{ steps.grab.outputs.peak_rss_kib }}
+          MISSING_OUTCOME: ${{ steps.negative_missing.outcome }}
+          CORRUPT_OUTCOME: ${{ steps.negative_corrupt.outcome }}
+          LOCAL_OUTCOME: ${{ steps.local.outcome }}
+          CLEANUP_OUTCOME: ${{ steps.cleanup.outcome }}
+          CLEANUP_EMPTY: ${{ steps.cleanup.outputs.empty }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os
+          from pathlib import Path
+
+          import requests
+
+          from lib.notify import notify
+
+          metrics = {}
+          metrics_path = Path(os.environ["RUNNER_TEMP"]) / "smoke-final-metrics"
+          if metrics_path.exists():
+              for line in metrics_path.read_text(encoding="utf-8").splitlines():
+                  key, value = line.split("=", 1)
+                  metrics[key] = value
+
+          message = "\n".join(
+              [
+                  f"Model archive smoke test: {os.environ['WORKFLOW_STATUS']}",
+                  f"Run: {os.environ['GITHUB_SERVER_URL']}/"
+                  f"{os.environ['GITHUB_REPOSITORY']}/actions/runs/"
+                  f"{os.environ['GITHUB_RUN_ID']}",
+                  f"Files/bytes: {os.environ['TOTAL_FILES'] or 'unavailable'}/"
+                  f"{os.environ['TOTAL_BYTES'] or 'unavailable'}",
+                  f"HF LFS SHA256 exposed: "
+                  f"{os.environ['LFS_EXPOSED'] or 'unavailable'}",
+                  f"Wall seconds: {metrics.get('wall_seconds', 'unavailable')}",
+                  "Observed throughput bytes/s: "
+                  f"{metrics.get('throughput_bytes_per_second', 'unavailable')}",
+                  f"Peak RSS KiB: {os.environ['PEAK_RSS_KIB'] or 'unavailable'}",
+                  f"L4 missing recovery: {os.environ['MISSING_OUTCOME']}",
+                  f"L5 corruption recovery: {os.environ['CORRUPT_OUTCOME']}",
+                  f"Budget pull/verify/reclaim: {os.environ['LOCAL_OUTCOME']}",
+                  f"Cleanup: {os.environ['CLEANUP_OUTCOME']}; "
+                  f"prefix empty={os.environ['CLEANUP_EMPTY'] or 'false'}",
+              ]
+          )
+
+          real_post = requests.post
+          responses = []
+
+          def recording_post(*args, **kwargs):
+              response = real_post(*args, **kwargs)
+              responses.append(response)
+              return response
+
+          requests.post = recording_post
+          notify(
+              message,
+              level="info" if os.environ["WORKFLOW_STATUS"] == "success" else "error",
+          )
+          if len(responses) != 1:
+              raise SystemExit(
+                  "SMOKE ASSERTION FAILED: notification helper did not POST exactly once"
+              )
+          responses[0].raise_for_status()
+          print(
+              "Notification assertion passed: ntfy endpoint acknowledged the full result."
+          )
+          PY
