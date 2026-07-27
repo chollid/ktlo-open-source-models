@@ -21,7 +21,7 @@ For every `state/jobs/*.json` not in a terminal state (`verified`, `pulled`, `fa
      Log loudly.
    - state says `uploaded` but R2 disagrees ⇒ trust R2, reset
 4. If any file needs re-upload, `repository_dispatch` a new `grab-model` for that job
-   (using `DISPATCH_PAT` — PLAN §6). The grabber's skip-if-uploaded logic makes this
+   (using `GITHUB_TOKEN` by default; `DISPATCH_PAT` only if explicitly set — PLAN §6). The grabber's skip-if-uploaded logic makes this
    cheap.
 5. If every file is `uploaded` but not all `verified`, set status `verifying` and run
    `verify_remote.py`.

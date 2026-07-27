@@ -212,18 +212,28 @@ DISPATCH_PAT           # fine-grained PAT, contents:write — see below
 NOTIFY_WEBHOOK         # optional
 ```
 
-### CRITICAL — `GITHUB_TOKEN` cannot trigger the grabber
+### CORRECTED 2026-07-26 — `GITHUB_TOKEN` DOES trigger the grabber
 
-GitHub blocks events raised using `GITHUB_TOKEN` from starting new workflow runs
-(anti-recursion). A `repository_dispatch` POST authenticated with `GITHUB_TOKEN`
-returns **204 Success and silently does nothing**.
+An earlier revision of this plan claimed `GITHUB_TOKEN` cannot fire
+`repository_dispatch` and mandated a PAT. **That was wrong.** GitHub's canonical source
+(`data/reusables/actions/actions-do-not-trigger-workflows.md` in `github/docs`) states:
 
-⇒ The watcher MUST authenticate its `repository_dispatch` call with `DISPATCH_PAT`
-(fine-grained PAT, `contents: write` on this repo only). The SPEC §4 code using
-`secrets.GITHUB_TOKEN` for dispatch is wrong and must not be copied.
+> When you use the repository's `GITHUB_TOKEN` to perform tasks, events triggered by the
+> `GITHUB_TOKEN` will not create a new workflow run, **with the following exceptions:**
+> * `workflow_dispatch` and `repository_dispatch` events **always create workflow runs.**
 
-Include an assertion in `watcher.py`: if `DISPATCH_PAT` is unset, fail loudly rather
-than degrade.
+`repository_dispatch` is an explicit exception. SPEC §4's use of `secrets.GITHUB_TOKEN`
+was correct as written.
+
+⇒ **Default to `GITHUB_TOKEN`.** `DISPATCH_PAT` is an OPTIONAL override, used only when
+explicitly set (cross-repo dispatch, or attributing the run to a user). Never required;
+never assert on its absence.
+
+Rationale for preferring `GITHUB_TOKEN`: fine-grained PATs **expire**. A required PAT
+would introduce a silent breakage months later — exactly the failure class this pipeline
+exists to prevent. `GITHUB_TOKEN` is auto-provisioned per run and never expires.
+
+The token needs `contents: write`, which state-pushing jobs already grant.
 
 ### public-repo hardening (mandatory)
 

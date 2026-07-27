@@ -1,0 +1,74 @@
+name: Sweep remote archive state
+
+on:
+  schedule:
+    - cron: "0 */2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: state-write
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Install rclone 1.74.4
+        run: |
+          curl -fsSLO https://downloads.rclone.org/v1.74.4/rclone-v1.74.4-linux-amd64.zip
+          unzip -q rclone-v1.74.4-linux-amd64.zip
+          sudo install -m 0755 rclone-v1.74.4-linux-amd64/rclone /usr/local/bin/rclone
+      - name: Configure private R2 remote
+        env:
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+        run: |
+          umask 077
+          mkdir -p "$HOME/.config/rclone"
+          {
+            printf '%s\n' '[r2]'
+            printf '%s\n' 'type = s3'
+            printf '%s\n' 'provider = Cloudflare'
+            printf 'access_key_id = %s\n' "$R2_ACCESS_KEY_ID"
+            printf 'secret_access_key = %s\n' "$R2_SECRET_ACCESS_KEY"
+            printf 'endpoint = https://%s.r2.cloudflarestorage.com\n' "$R2_ACCOUNT_ID"
+            printf '%s\n' 'acl = private'
+            printf '%s\n' 'no_check_bucket = true'
+          } > "$HOME/.config/rclone/rclone.conf"
+          chmod 600 "$HOME/.config/rclone/rclone.conf"
+      - name: Reconcile and verify remote objects
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DISPATCH_PAT: ${{ secrets.DISPATCH_PAT }}
+          NOTIFY_WEBHOOK: ${{ secrets.NOTIFY_WEBHOOK }}
+          SWEEPER_PUSH_BEFORE_DISPATCH: "1"
+        run: python sweeper.py
+      - name: Commit final verification state
+        if: always()
+        run: |
+          git add state/jobs/
+          if git diff --cached --quiet; then
+            echo "No final state changes."
+            exit 0
+          fi
+          git config user.name "model-archive-bot"
+          git config user.email "model-archive-bot@users.noreply.github.com"
+          git commit -m "state: record remote sweep verification"
+          git pull --rebase
+          git push
