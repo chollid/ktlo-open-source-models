@@ -1,0 +1,95 @@
+name: r2-diagnose
+
+# Temporary diagnostic. Surfaces the real rclone error that smoke.yml discards
+# via 2>/dev/null, and tests whether `region = auto` is the missing piece.
+# Secret values are masked by GitHub in all output.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Install rclone
+        run: |
+          set -euo pipefail
+          curl -fsSL https://downloads.rclone.org/v1.74.4/rclone-v1.74.4-linux-amd64.zip -o /tmp/rclone.zip
+          unzip -q -j /tmp/rclone.zip '*/rclone' -d /usr/local/bin
+          chmod +x /usr/local/bin/rclone
+          rclone version | head -2
+
+      - name: Probe R2
+        env:
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+        run: |
+          set -uo pipefail
+
+          echo "=== shape checks (no values printed) ==="
+          echo "access_key_id  : ${#R2_ACCESS_KEY_ID} chars"
+          echo "secret         : ${#R2_SECRET_ACCESS_KEY} chars"
+          echo "account_id     : ${#R2_ACCOUNT_ID} chars"
+          echo "bucket         : ${#R2_BUCKET} chars"
+          case "$R2_ACCOUNT_ID" in
+            *[!0-9a-fA-F]*) echo "account_id     : WARNING contains non-hex characters" ;;
+            *)              echo "account_id     : all hex OK" ;;
+          esac
+          case "$R2_BUCKET" in
+            */*) echo "bucket         : WARNING contains a slash - should be the bare bucket name" ;;
+            *)   echo "bucket         : no slash OK" ;;
+          esac
+          echo
+
+          endpoint="https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
+
+          echo "=== 0. endpoint reachability ==="
+          curl -s -o /dev/null -w "  HTTP %{http_code} in %{time_total}s\n" --max-time 15 "$endpoint" \
+            || echo "  UNREACHABLE - account id likely wrong"
+          echo
+
+          mkconf() {
+            local f="$1" extra="${2:-}"
+            {
+              printf '[r2]\n'
+              printf 'type = s3\n'
+              printf 'provider = Cloudflare\n'
+              printf 'access_key_id = %s\n' "$R2_ACCESS_KEY_ID"
+              printf 'secret_access_key = %s\n' "$R2_SECRET_ACCESS_KEY"
+              printf 'endpoint = %s\n' "$endpoint"
+              printf 'acl = private\n'
+              printf 'no_check_bucket = true\n'
+              [ -n "$extra" ] && printf '%s\n' "$extra"
+            } > "$f"
+            chmod 600 "$f"
+          }
+
+          mkconf /tmp/no-region.conf ""
+          mkconf /tmp/with-region.conf "region = auto"
+
+          probe() {
+            local label="$1" conf="$2"; shift 2
+            echo "=== ${label} ==="
+            timeout 60 rclone --config "$conf" --low-level-retries 1 --retries 1 \
+              --contimeout 10s --timeout 20s -vv "$@" 2>&1 | tail -20 | sed 's/^/  /'
+            echo "  -> exit ${PIPESTATUS[0]}"
+            echo
+          }
+
+          probe "1. lsd r2:  (current config, NO region)" /tmp/no-region.conf   lsd "r2:"
+          probe "2. lsd r2:  (WITH region = auto)"        /tmp/with-region.conf lsd "r2:"
+          probe "3. lsjson bucket (WITH region)"          /tmp/with-region.conf lsjson "r2:${R2_BUCKET}" --max-depth 1
+          probe "4. purge smoke prefix (WITH region)"     /tmp/with-region.conf purge "r2:${R2_BUCKET}/smoke"
+
+          echo "=== interpretation ==="
+          echo "  1 fails / 2 works        -> missing 'region = auto'"
+          echo "  both 401/403             -> token lacks Object Read & Write, or wrong keys"
+          echo "  step 0 unreachable       -> R2_ACCOUNT_ID wrong"
+          echo "  3 NotFound               -> R2_BUCKET does not match the real bucket"
+          echo "  4 'directory not found'  -> normal, smoke prefix does not exist yet"
