@@ -46,8 +46,25 @@ jobs:
             *)   echo "bucket         : no slash OK" ;;
           esac
           echo
+          echo "=== identity checks (booleans only, no values) ==="
+          if [ "$R2_ACCOUNT_ID" = "$R2_ACCESS_KEY_ID" ]; then
+            echo "  account_id == access_key_id : YES  <-- THIS IS THE BUG"
+            echo "  The R2 account ID and the access key ID are different values."
+            echo "  Account ID comes from the dashboard URL, not the API token screen."
+          else
+            echo "  account_id == access_key_id : no"
+          fi
+          echo "  account_id lowercase hex    : $(printf '%s' "$R2_ACCOUNT_ID" | grep -qE '^[0-9a-f]{32}$' && echo yes || echo 'no (R2 account ids are lowercase)')"
+          echo
 
           endpoint="https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
+
+          echo "=== DNS resolution ==="
+          host="${R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
+          getent hosts "$host" >/dev/null 2>&1 && echo "  resolves OK" || echo "  DOES NOT RESOLVE"
+          echo "  (a wrong-but-well-formed account id still resolves via wildcard DNS,"
+          echo "   then fails at TLS - which is exactly what we saw)"
+          echo
 
           echo "=== 0. endpoint reachability ==="
           curl -s -o /dev/null -w "  HTTP %{http_code} in %{time_total}s\n" --max-time 15 "$endpoint" \
