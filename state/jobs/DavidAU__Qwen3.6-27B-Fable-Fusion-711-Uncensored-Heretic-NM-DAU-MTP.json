@@ -1,0 +1,229 @@
+{
+  "discovered_utc": "2026-07-28T23:57:42Z",
+  "files": {
+    ".gitattributes": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 1674,
+      "uploaded": false,
+      "verified": false
+    },
+    "README.md": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 190440,
+      "uploaded": false,
+      "verified": false
+    },
+    "chat_template-instruct.jinja": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 11839,
+      "uploaded": false,
+      "verified": false
+    },
+    "chat_template.jinja": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 11803,
+      "uploaded": false,
+      "verified": false
+    },
+    "config.json": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 3869,
+      "uploaded": false,
+      "verified": false
+    },
+    "ff711-benches.png": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "1e44778749408170e5bfce79aa431b5668618a8d43292454a7d0899f75aed5e7",
+      "size": 273317,
+      "uploaded": false,
+      "verified": false
+    },
+    "generation_config.json": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 213,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00001-of-00012.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "3697575b184c68b508b7bd572e6c146d0f780883ccf526cdcc3391e0ce59ad18",
+      "size": 2542796928,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00002-of-00012.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "43cdddbef9aad7eefe60de454c8ca67348abad393c685fcf058bcf8ed759d6cd",
+      "size": 4842451936,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00003-of-00012.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "76c61f4ae524d188e5408a0eb2efb31408ecb384091a98f928a50775fa892058",
+      "size": 4965228032,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00004-of-00012.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "a5b61556332fc9b93b58bebc3df336b9e2e518746a51ab129f3851ef9428e91c",
+      "size": 4933789808,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00005-of-00012.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "4c685f8ff7c44e894b81a40023593dbba5a04fcc48f54ec1b8e544071528a2b2",
+      "size": 4965228032,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00006-of-00012.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "4bd5347af7a52cc92c35a9031c6480e170df4703bb18b193fad5b53d252777b6",
+      "size": 4911753512,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00007-of-00012.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "fb5ffcaed06aabb7b805410319b3e02f560336adbadc1910780d0c1c5441f3b2",
+      "size": 4965228016,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00008-of-00012.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "6070c75a4e576be34bc835926476262502a36a2d27936555fe2f439ac2b945f6",
+      "size": 4933789824,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00009-of-00012.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "65ca9716a7ee8f304f12cd7de5899b9375e41f276c27203470f4bbfd5f4086e5",
+      "size": 4965228016,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00010-of-00012.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "b22beac9e0c4c3c836f32cc85df8fc2609ebc8c5b2752e68731353f21f41195c",
+      "size": 4933789824,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00011-of-00012.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "75a8e97e9075341916a61115e71189861c61c934a1a9bfa1b4720f92657adbb8",
+      "size": 4911732744,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00012-of-00012.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "d10e3bd265750843d0a41ac917123d5228bb4a64bc5ca88659650a857678c567",
+      "size": 3587132840,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-mtp-restored.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "98348118686967fe3d5db57dacdac3e4b24d5edff9bab9e56f43cf423d855a92",
+      "size": 104857696,
+      "uploaded": false,
+      "verified": false
+    },
+    "model.safetensors.index.json": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 113450,
+      "uploaded": false,
+      "verified": false
+    },
+    "tokenizer.json": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "6f32ce20dc35f57a7f9ad1eac03525bd7d30f9df8cea6507e958279cc3657706",
+      "size": 19989492,
+      "uploaded": false,
+      "verified": false
+    },
+    "tokenizer_config.json": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 15293,
+      "uploaded": false,
+      "verified": false
+    },
+    "valhalla.webp": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "010bce05f9f652093f5b1504f797e540a905871211572ddfc53a0e256d2f84aa",
+      "size": 4336184,
+      "uploaded": false,
+      "verified": false
+    }
+  },
+  "priority": "abliterated",
+  "repo_id": "DavidAU/Qwen3.6-27B-Fable-Fusion-711-Uncensored-Heretic-NM-DAU-MTP",
+  "revision": "22c942f248e9de268b666534afa7140619907215",
+  "safe_name": "DavidAU__Qwen3.6-27B-Fable-Fusion-711-Uncensored-Heretic-NM-DAU-MTP",
+  "status": "planned",
+  "total_bytes": 55587954782,
+  "total_files": 24,
+  "updated_utc": "2026-07-28T23:57:42Z"
+}
