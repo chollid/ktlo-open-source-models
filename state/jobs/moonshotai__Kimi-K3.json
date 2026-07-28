@@ -1,0 +1,1075 @@
+{
+  "discovered_utc": "2026-07-28T01:56:05Z",
+  "files": {
+    ".eval_results/apex-agents.yaml": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 157,
+      "uploaded": false,
+      "verified": false
+    },
+    ".eval_results/deep-swe.yaml": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 156,
+      "uploaded": false,
+      "verified": false
+    },
+    ".eval_results/gpqa.yaml": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 152,
+      "uploaded": false,
+      "verified": false
+    },
+    ".eval_results/hle.yaml": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 139,
+      "uploaded": false,
+      "verified": false
+    },
+    ".gitattributes": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 1639,
+      "uploaded": false,
+      "verified": false
+    },
+    "LICENSE": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 3065,
+      "uploaded": false,
+      "verified": false
+    },
+    "README.md": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 45261,
+      "uploaded": false,
+      "verified": false
+    },
+    "assets/kimi-logo.png": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 87988,
+      "uploaded": false,
+      "verified": false
+    },
+    "config.json": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 7006,
+      "uploaded": false,
+      "verified": false
+    },
+    "configuration_kimi_k3.py": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 11343,
+      "uploaded": false,
+      "verified": false
+    },
+    "encoding_k3.py": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 22827,
+      "uploaded": false,
+      "verified": false
+    },
+    "generation_config.json": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 53,
+      "uploaded": false,
+      "verified": false
+    },
+    "kimi_k3_processor.py": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 7660,
+      "uploaded": false,
+      "verified": false
+    },
+    "kimi_k3_vision_processing.py": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 6686,
+      "uploaded": false,
+      "verified": false
+    },
+    "media_utils.py": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 13844,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00001-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "975584c00f85a95fce8ae0f840af8cef69c2ef4db00d34cab3e2cbdfc60f6e51",
+      "size": 2341216112,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00002-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "26a3284e1d2cb567934ebef002e6a1813551d646739e8bcb1e9e3fe7f878e0f5",
+      "size": 16990911504,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00003-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "e54af9de4c554956082364010f732443bcd5097390f0121a33fb35e37280b5a9",
+      "size": 16990911504,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00004-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "5955fd8feda89b1af8400c25e885e7177d47edff155f54b318beb8dd1cec5c05",
+      "size": 16567501776,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00005-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "d60d68ad0381ffd2d8716d5991a65993cc81837455bf05d1c76ea3a75662e268",
+      "size": 16990911504,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00006-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "b1d4805767471a9721cd087d2047843ab9262d4f9bbe0d4a306e72c07179f939",
+      "size": 16990911504,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00007-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "fb1120fef34c0416e73a3259ae6114b9a82b6081871b368a199e0b265cac7df7",
+      "size": 16990911504,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00008-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "2318dda54fc1985b63d6068de54fbe312ac87317c902666c9075aa5e10e8a1c9",
+      "size": 16567501776,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00009-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "8b66cdde34f5130cf4f99ec35b16f1f6d33bf0ec946cf2a5612004f5d399f998",
+      "size": 16990911504,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00010-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "d34f55f7b734a1eaecc986fc7f92bcaa1b7d18fad90a33befd3fae4f1b2771a9",
+      "size": 16990911504,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00011-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "1738856a4cca2e356510892de4accf3c3f94b9f598b0394a87e7951740ba4a21",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00012-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "c6b9bef38415f509898fa7b5c04d20c6fee84b0e02c05d74259d201fe6f3868b",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00013-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "3cbf43d56d9c80be0f848a4866e290741c697e09d885dc2351b0a11de514d9c8",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00014-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "ce5f343f07d408c64fb247bbe8691edb84d54e3976d3ff586ebcf5929fd143ad",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00015-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "b55caa8013348498525eef2b1416a657f0c28264ada9b245df19d2eea168b4c1",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00016-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "5a63e63ced659c1996b02ccabdea977546a39ecce025af1e54552de3bfc0489e",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00017-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "622bfa605205f4ef65e44dac07246bea79e18123ae8b84ab33eec89b6364c3a9",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00018-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "838b265ebb86a1320e589685779125d224663160823873b9e5930cf63fafe796",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00019-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "599a8ecf88f21d4c91295b4160e7564e501807535e522195ee45050a04f17ded",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00020-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "8e01b61ab76655ca0c5bd6645303a00c05fb58da94e00f978a9ef1e8114a6f0f",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00021-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "1944265bd024ea6caa23796326e420260a801e5c52e6253155f22ce97e9578d0",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00022-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "2d32d3e3c8da0764f73830289c6a22224f755c0cf058df0262fb0f83b3777029",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00023-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "c291f2ec15788cb24cdf791c6d68dbf8803b26d01415cff3fab367cba581a169",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00024-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "278855ab81d42337e2a1857f136d740911fe3f5b1813dc21ce2cb03dc5c3cde3",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00025-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "6e3ae6ad868f5b38fa7ddface520796ea251568b07447deee3d164a0a32d862b",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00026-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "cdd79fb52c7a3350926c4b947ae82cccd0af17fa3fb537c5694a4cedf2b59811",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00027-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "1d974b40c4aeb5cc0adeba6f9fbad25fc99f8cd39f9dd3513aeb2fb30a9c4188",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00028-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "1bec58e89ab7835d3ca40e581cc6f047cb93de47fda804eaea4e2407e01c3ed3",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00029-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "c3bf0e738aa5fbd6ca3ecad982aba8d09efffd58b40cd8fb62d02fe0492f5ceb",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00030-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "7b996410482ad3c21700ed35d3f2b36282540db92b5631a31aeda1c5e90d6343",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00031-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "c26689540a2471fe690c441a6cf9bec8f00471930e3131962206fd992e0d377c",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00032-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "f7dc9e726d46d5c7c2c35af2eea4860cc89dd38a52b60591358a5ca7899c5159",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00033-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "615afa33b69cbaa42122bb3bcce92e40d6de86713a301c43c5d1bc2ac4342c1b",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00034-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "a53b27fe92df11e77aec7c5de93ac148b9e2a7bac95020535f68854a7977bde7",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00035-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "9f4b44c89e4965a973f4fa71eaa0f8ada110f588065541e83bf52692feaa886d",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00036-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "55aef33fab36df93731289ba38d0ce516d9880c100be5f69f933d0af80bf3c6e",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00037-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "e95dd3599d6918f5a22bc7b1256aaee9147f40aa05f43135d083d511eb5cbd80",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00038-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "1ce472771309248fd1155313dc3f72daa6fcc4793fba86d6c5d6a758ff6254ae",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00039-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "9c75b18c0d3a5088e13973dde519e74ead5c7b1df216dcd623b7ee561f378057",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00040-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "6f664598c00aee095174db1f860182652ff9b808f53c7764f70e071c6f8a4893",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00041-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "375f05f94a59d1509bef0976269fceb8f28d40e161d4903e64f735b1ede405c2",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00042-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "b65947611d6c150394955f4637d4b05007f20a9b1c0f0f02bcf45d0ae2a428ba",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00043-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "b5a425f100bbfaf804ac2dcca197ccf8fb3a910b6aa79d93e3a103b0146a8309",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00044-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "113ee012044206e9156dd683cb97ee5f27b07d0a4f936cbda457cd0bcf8ca336",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00045-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "eb0698659da59c469020a03b3aa8d9ef847fc6359b2513b6720746a44da6f4de",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00046-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "0270727a399c553a602360b04bc1b5feaf09b22e12e3bb7eea5261801d4a1024",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00047-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "b38f63eb08036cdf766a078c93ee037630d6481ded26065150915b8deaf03bb8",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00048-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "131e243c02cf2dc713de108edb8bfdb01c7ee28ce59d0a6615a630fb7cf0e4ae",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00049-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "72c91dcf2909ead55b6b5234e725227effbcd59fa5ce9f552e91c48d423cef0f",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00050-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "0a627a082cd39ee7d55f7440a5012c1fe084313f970e7d4351bb08d8ac7f5f2a",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00051-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "38a37bcec20abe1ddfaf68a636cd61cd291b71d554419a57736fd97d08a8cbff",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00052-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "9703b632174112ea051aaa2ca8b67558ffbf41a4699d042580ff11f26ec28e0a",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00053-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "413ec9ea0b693161c5e8a393a7a6be40a9f3c27114a919e1302fe94daeeee621",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00054-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "0e3da201b765929787e40c2fb8cd0cfb3476bfb9b95d7eb59b7d1066960606a2",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00055-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "e7c9f4e44f8ac95f73048078c406781fb0418831089fd2f7c55459887606204b",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00056-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "efd6176016b9fab27cca7710dce7ed599f06bbba1a8b126cfc76781b42c0e880",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00057-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "e6982c96ac9101b75ab32c56568f5740ddae771acad29d92750b95aeeb3a7a30",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00058-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "c93a23cbd6530391dcd9ce5617d24fb759e380f5ca676f83d00c8d6a9cda896f",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00059-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "a62eb822071036421fa4aab662dafe3a3873b1b926378ebf489cddfd48a4d5de",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00060-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "9bccbaa71b98f8526ca4c6cb091a489063ec4734c84bb5f6d11eeb0512360b5f",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00061-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "1ae3969540fc676480804c37adc54df77e5ebb923952abb46d398b3a2d612e9d",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00062-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "96babdc24f2203eed68bd88f8534546696ab35bb1d0db7a5f15aaee295deee68",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00063-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "8a81caa697a7baf491393d83e3b85e14a0d025f5ee2ca91561528e8aec5c63ea",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00064-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "325c72d6ca5aaefd020da647ac317621903c8576a97d1de664b93638b7172f39",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00065-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "276d1cce1d8d494526938d878d4afb713ca379f98064dcd3c505325c954639db",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00066-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "2ebd83fea628d8cf7496a936f66a8a7f1b430bc8438644ae6ac9761ac056194e",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00067-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "f0228892f8199c29c5053e7e5388a60dacf1458b53eb6f471e1f548f02478dd1",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00068-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "fa75764056d16855c42baffd474bcc01045deda7ed5f773d88ff8887ea8458b6",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00069-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "9375584663bd3073cd95df18c3dc99fd4346c0c71dfdeec686a4891b7768a738",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00070-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "ab53464148721a209d4941dc3ab6f698574f913179e729726d00ed6232144893",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00071-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "28ac0d3286ffc5c8567cc3b265500777ba2b75a0a5c6a273c87a5c9cfd8a8a5b",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00072-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "0a269faaf8ea2daccef499e7c1501089ea05386ca7c6a5a9d4150fd38e37673b",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00073-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "a1b2e79e1bb7c9e0ade3f0825b748024a5207317589fc57f91dc2540443d716a",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00074-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "df945022b493373bdcacc3903cc406978342dff2c1b3ace5278b1909fb1d2479",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00075-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "8c6d7cb12f7c51aa88207c5b9410fccfa44e4a9022efc75d73c06054c1296c05",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00076-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "d5174eb5de19274b0fe62d466bfb21bac3b03d6d9676b801c6fea1ed57657998",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00077-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "8707eacfd69e8be65c7052551834e7ac26945b9ddf915939e08f5eb813c6a262",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00078-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "2773d41de168c7373bf2f7f9994cbbb2712c379503578d8462aa783db7cba128",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00079-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "da02c8a46b81f42a64330e0e31478dcd7b020633a65251b535817431bba1d96b",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00080-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "96b5accdf3bc2b4651979361fa7f6191197b8573c36ab6a58effce487402b177",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00081-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "01562aa616ea3dc398a7c40b4d9c3c4700885541efeaed6dbd1ba8076cae9c4b",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00082-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "8cba090734d9a3900276cca442bd6fa60f5206ce0c70884f7b2df3df877485bd",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00083-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "6ceebf8ce621712dd3185943224ca83a45f5bc310c272df7dee4b69e3dfc87fe",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00084-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "c3f1318e7e1cc6893230a14c229a0c9ec0037cb1d0912a395f9222a3e8a8bc2d",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00085-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "633b2e3b86ec35f87fa4216b14bba49fc4058a1296433bc22b0576925118b6ad",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00086-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "add4056ab3ecaa7befdac2e00280d294ce470d541917ac90df8fc50497df7fb0",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00087-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "f6d608f2c40b584b775db184013e37740d4710abad414c584408e0ad09fb486b",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00088-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "87afe43b8a71d2cc56787a976f52f8c35bcfbe85df7d0c445194bc1f4d7e0c4a",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00089-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "24016b28cfdf9420ae2f411145ef919cf2e1ec667830aded439bfb761c61755f",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00090-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "1ecd85dbd77ce081f6238b894f8a7da2ff40346da7042c427a52d83562dbb5ea",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00091-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "a4e666132aed052b4bf174f56853b70cbb2ada898fe568f60e0cdf3ad46a0a4a",
+      "size": 16990916912,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00092-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "359848294be55e1c8949f0a4c92098bc73276895289fd1123f10769ba685e248",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00093-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "d31d58d1bd3fcb8c350ef497d2acd23e0fe768ab5c0621e60f20b03d611f64e6",
+      "size": 16567507176,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00094-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "ad66e1cb96b86963e63d6a0a466b6a407b13c9815cb480fe612480cc6bb3b6e1",
+      "size": 4697664072,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00095-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "01d41139abb8cf3b5288a97318cc4ab92676671b4eb141031cd80d7c3ced6122",
+      "size": 92289328,
+      "uploaded": false,
+      "verified": false
+    },
+    "model-00096-of-000096.safetensors": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "9d10c74fc10161bef9463a8541a634a97f521f43c99368ea7243ce0c79cdbf7c",
+      "size": 802448352,
+      "uploaded": false,
+      "verified": false
+    },
+    "model.safetensors.index.json": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "a1c5210650ce71d2d3ae9ec5a101ac4afd3cf4b10091be589853437eb967febd",
+      "size": 59764096,
+      "uploaded": false,
+      "verified": false
+    },
+    "modeling_kimi_k3.py": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 53444,
+      "uploaded": false,
+      "verified": false
+    },
+    "modeling_kimi_linear.py": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 51506,
+      "uploaded": false,
+      "verified": false
+    },
+    "preprocessor_config.json": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 1011,
+      "uploaded": false,
+      "verified": false
+    },
+    "tiktoken.model": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": true,
+      "sha256": "b6c497a7469b33ced9c38afb1ad6e47f03f5e5dc05f15930799210ec050c5103",
+      "size": 2795286,
+      "uploaded": false,
+      "verified": false
+    },
+    "tokenization_kimi.py": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 16145,
+      "uploaded": false,
+      "verified": false
+    },
+    "tokenizer_config.json": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 3478,
+      "uploaded": false,
+      "verified": false
+    }
+  },
+  "priority": "base",
+  "repo_id": "moonshotai/Kimi-K3",
+  "revision": "9f62e4e9fffbd0a83ddd60e1c209d828994b3569",
+  "safe_name": "moonshotai__Kimi-K3",
+  "status": "planned",
+  "total_bytes": 1560998984390,
+  "total_files": 118,
+  "updated_utc": "2026-07-28T01:56:06Z"
+}
