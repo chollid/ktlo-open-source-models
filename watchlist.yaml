@@ -111,6 +111,18 @@ targets:
       exclude: []
     max_total_bytes: 2_000_000_000_000
 
+  # Specific archive request: take the FULL repo (all quants + mmproj vision
+  # projectors). 465 GB, and dropping mmproj would leave an unusable vision model.
+  - author: DavidAU
+    include: ["Qwen3.6-27B-Fable-Fusion-711"]
+    priority: abliterated
+    file_rules:
+      always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py",
+                    "mmproj*", "*.png", "*.webp"]
+      include: []
+      exclude: []
+    max_total_bytes: 600_000_000_000
+
 quality_gates:
   min_downloads: 50
   require_method: ["heretic", "abliterat"]
