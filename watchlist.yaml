@@ -18,7 +18,7 @@ targets:
     priority: abliterated
     file_rules:
       always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
-      include: ["*Q4_K_M*"]
+      include: ["*Q4_K_M*", "*Q4_K_S*", "*IQ4*"]
       exclude: []
     max_total_bytes: 2_000_000_000_000
   - author: DavidAU
@@ -26,7 +26,7 @@ targets:
     priority: abliterated
     file_rules:
       always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
-      include: ["*Q4_K_M*"]
+      include: ["*Q4_K_M*", "*Q4_K_S*", "*IQ4*"]
       exclude: []
     max_total_bytes: 2_000_000_000_000
   - author: Youssofal
@@ -34,7 +34,7 @@ targets:
     priority: abliterated
     file_rules:
       always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
-      include: ["*Q4_K_M*"]
+      include: ["*Q4_K_M*", "*Q4_K_S*", "*IQ4*"]
       exclude: []
     max_total_bytes: 2_000_000_000_000
   - author: audnai
@@ -42,7 +42,72 @@ targets:
     priority: abliterated
     file_rules:
       always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
-      include: ["*Q4_K_M*"]
+      include: ["*Q4_K_M*", "*Q4_K_S*", "*IQ4*"]
+      exclude: []
+    max_total_bytes: 2_000_000_000_000
+
+  - author: mlabonne
+    include: ["Kimi-K3"]
+    priority: abliterated
+    file_rules:
+      always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
+      include: ["*Q4_K_M*", "*Q4_K_S*", "*IQ4*"]
+      exclude: []
+    max_total_bytes: 2_000_000_000_000
+  - author: failspy
+    include: ["Kimi-K3"]
+    priority: abliterated
+    file_rules:
+      always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
+      include: ["*Q4_K_M*", "*Q4_K_S*", "*IQ4*"]
+      exclude: []
+    max_total_bytes: 2_000_000_000_000
+  - author: byroneverson
+    include: ["Kimi-K3"]
+    priority: abliterated
+    file_rules:
+      always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
+      include: ["*Q4_K_M*", "*Q4_K_S*", "*IQ4*"]
+      exclude: []
+    max_total_bytes: 2_000_000_000_000
+  - author: p-e-w
+    include: ["Kimi-K3"]
+    priority: abliterated
+    file_rules:
+      always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
+      include: ["*Q4_K_M*", "*Q4_K_S*", "*IQ4*"]
+      exclude: []
+    max_total_bytes: 2_000_000_000_000
+  - author: bartowski
+    include: ["Kimi-K3"]
+    priority: abliterated
+    file_rules:
+      always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
+      include: ["*Q4_K_M*", "*Q4_K_S*", "*IQ4*"]
+      exclude: []
+    max_total_bytes: 2_000_000_000_000
+  - author: mradermacher
+    include: ["Kimi-K3"]
+    priority: abliterated
+    file_rules:
+      always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
+      include: ["*Q4_K_M*", "*Q4_K_S*", "*IQ4*"]
+      exclude: []
+    max_total_bytes: 2_000_000_000_000
+  - author: nicoboss
+    include: ["Kimi-K3"]
+    priority: abliterated
+    file_rules:
+      always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
+      include: ["*Q4_K_M*", "*Q4_K_S*", "*IQ4*"]
+      exclude: []
+    max_total_bytes: 2_000_000_000_000
+  - author: TheDrummer
+    include: ["Kimi-K3"]
+    priority: abliterated
+    file_rules:
+      always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
+      include: ["*Q4_K_M*", "*Q4_K_S*", "*IQ4*"]
       exclude: []
     max_total_bytes: 2_000_000_000_000
 
