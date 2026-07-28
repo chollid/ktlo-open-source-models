@@ -29,8 +29,10 @@ jobs:
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
           R2_BUCKET: ${{ secrets.R2_BUCKET }}
+        shell: bash --noprofile --norc {0}
         run: |
-          set -uo pipefail
+          set +e
+          set -u
 
           echo "=== shape checks (no values printed) ==="
           echo "access_key_id  : ${#R2_ACCESS_KEY_ID} chars"

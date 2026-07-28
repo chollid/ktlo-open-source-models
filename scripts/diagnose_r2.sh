@@ -67,10 +67,13 @@ mkconf() { # $1 = extra line
   printf '%s' "$f"
 }
 
+TIMEOUT=""
+for c in timeout gtimeout; do command -v "$c" >/dev/null 2>&1 && { TIMEOUT="$c 45"; break; }; done
+
 probe() {
   local label=$1 conf=$2; shift 2
   echo "== ${label} =="
-  timeout 45 rclone --config "$conf" --low-level-retries 1 --retries 1 \
+  $TIMEOUT rclone --config "$conf" --low-level-retries 1 --retries 1 \
     --contimeout 10s --timeout 20s "$@" 2>&1 | sed 's/^/  /' | head -12
   echo "  -> exit ${PIPESTATUS[0]}"
   echo
