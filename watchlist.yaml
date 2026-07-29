@@ -115,7 +115,7 @@ targets:
   # The repo ships 13 quant levels x 3 variants (465 GB); we want ~24.5 GB.
   # mmproj is essential - without it the multimodal half of the model is unusable.
   - author: DavidAU
-    include: ["Qwen3.6-27B-Fable-Fusion-711"]
+    include: ["Qwen3.6-27B-Fable-Fusion-711-Uncensored-Heretic-NM-DAU-NEO-MAX-MTP-GGUF"]
     priority: abliterated
     file_rules:
       always_keep: ["*.json", "*.md", "*.jinja", "tokenizer*", "mmproj-F16.gguf"]
