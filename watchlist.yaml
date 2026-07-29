@@ -119,9 +119,11 @@ targets:
     priority: abliterated
     file_rules:
       always_keep: ["*.json", "*.md", "*.jinja", "tokenizer*", "mmproj-F16.gguf"]
-      include: ["*NEO-MAX-NEO-Q6_K.gguf"]
+      include: ["*NEO-MAX-NEO-Q6_K.gguf",
+                "*NEO-MAX-NEO-Q4_K_M.gguf",
+                "*NEO-MAX-NEO-MTP-Q6_K.gguf"]
       exclude: []
-    max_total_bytes: 50_000_000_000
+    max_total_bytes: 100_000_000_000
 
 quality_gates:
   min_downloads: 50
