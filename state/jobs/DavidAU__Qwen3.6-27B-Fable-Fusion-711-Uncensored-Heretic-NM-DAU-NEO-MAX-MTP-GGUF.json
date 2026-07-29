@@ -7,12 +7,12 @@
       "lfs": false,
       "sha256": null,
       "size": 4308,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-AMD-MTP-IQ4_XS.gguf": {
-      "attempts": 0,
-      "last_error": null,
+      "attempts": 1,
+      "last_error": "shard worker produced no result artifact",
       "lfs": true,
       "sha256": "d7df3aa553e95b9b419314dead24542d70a280144e40614540b363f94d9885b6",
       "size": 16808074720,
@@ -25,12 +25,12 @@
       "lfs": true,
       "sha256": "c394c7c0dcbd32e04f4695ad5d4dad8f2f5b7286b366d165815ac0cdc5ccf4aa",
       "size": 24033705440,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-IQ2_M.gguf": {
-      "attempts": 0,
-      "last_error": null,
+      "attempts": 1,
+      "last_error": "shard worker produced no result artifact",
       "lfs": true,
       "sha256": "318a28c90ef6d4a9425359a46a7c87f62ef4b560073fedac845d843903937a82",
       "size": 11673305632,
@@ -38,8 +38,8 @@
       "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-IQ3_M.gguf": {
-      "attempts": 0,
-      "last_error": null,
+      "attempts": 1,
+      "last_error": "shard worker produced no result artifact",
       "lfs": true,
       "sha256": "4408a4815176070afb560ddadcf5883f524e159056e7e830274777a3a9c9b176",
       "size": 14080729632,
@@ -47,8 +47,8 @@
       "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-IQ4_NL.gguf": {
-      "attempts": 0,
-      "last_error": null,
+      "attempts": 1,
+      "last_error": "shard worker produced no result artifact",
       "lfs": true,
       "sha256": "02d75b64ba0de6ef4ea6213e0bd4da84a61c7395af0d52328cd23c7f1ea99e2e",
       "size": 17301783072,
@@ -56,8 +56,8 @@
       "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-IQ4_XS.gguf": {
-      "attempts": 0,
-      "last_error": null,
+      "attempts": 1,
+      "last_error": "shard worker produced no result artifact",
       "lfs": true,
       "sha256": "d1175dc3668e8edcc922c790918e2123029aaf7697d706df65f8e088864b397c",
       "size": 16582361632,
@@ -70,12 +70,12 @@
       "lfs": true,
       "sha256": "cb2aacf5edabe80d2f446d40cffad03148e1f776741cc08fd5a5360be15220ab",
       "size": 15139364320,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-LOW-MTP-Q6_K.gguf": {
-      "attempts": 0,
-      "last_error": null,
+      "attempts": 1,
+      "last_error": "shard worker produced no result artifact",
       "lfs": true,
       "sha256": "85a5709aec6e2f5f086eb2aa7cb53081fd7021198490ad24cb0463569a12f238",
       "size": 22841769440,
@@ -88,7 +88,7 @@
       "lfs": true,
       "sha256": "2e1962e00bf599f2caff876ff18ebc11a0bbbbb1255ecbb74414a9fd24986aba",
       "size": 12124626400,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-MTP-IQ3_M.gguf": {
@@ -97,7 +97,7 @@
       "lfs": true,
       "sha256": "ee00a9be5f78c188a8cf1ab0b4cd2b13c282be98e030fb56bc7489c4c3e0b9a3",
       "size": 14532050400,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-MTP-IQ4_NL.gguf": {
@@ -106,7 +106,7 @@
       "lfs": true,
       "sha256": "6412f06f849f3956d2a25f9bd5174d5ce38dd974719515d9dcf43aaae4ef442f",
       "size": 17753103840,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-MTP-IQ4_XS.gguf": {
@@ -115,12 +115,12 @@
       "lfs": true,
       "sha256": "9072cb8bf382a8019c2a487ac65d853f680ccc05d8c32d4989bb2854c8060174",
       "size": 17033682400,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-MTP-Q4_K_M.gguf": {
-      "attempts": 0,
-      "last_error": null,
+      "attempts": 1,
+      "last_error": "shard worker produced no result artifact",
       "lfs": true,
       "sha256": "c796c2c011eaa0edf06395ff49cda5bfd4843ad52b86b58a83296dfc33849e4e",
       "size": 18498575840,
@@ -128,8 +128,8 @@
       "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-MTP-Q4_K_S.gguf": {
-      "attempts": 0,
-      "last_error": null,
+      "attempts": 1,
+      "last_error": "shard worker produced no result artifact",
       "lfs": true,
       "sha256": "99c3f0140d03d02643d966e4b02e853ce6f02f02b65d219da318447efd54f0ee",
       "size": 17537490400,
@@ -137,8 +137,8 @@
       "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-MTP-Q5_K_M.gguf": {
-      "attempts": 0,
-      "last_error": null,
+      "attempts": 1,
+      "last_error": "shard worker produced no result artifact",
       "lfs": true,
       "sha256": "c0f73caef72a1f546092f93f0d8db6f4939ad121ac5e6e3665f0829657b86d7d",
       "size": 21182275040,
@@ -151,12 +151,12 @@
       "lfs": true,
       "sha256": "8bde6f4e3470da3cc40807f4da2286689ba2b30e3e4833be24f14fbd985be89b",
       "size": 20630789600,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-MTP-Q6_K.gguf": {
-      "attempts": 0,
-      "last_error": null,
+      "attempts": 1,
+      "last_error": "shard worker produced no result artifact",
       "lfs": true,
       "sha256": "2e8a9bdb478cad4ad53a3b02568ed6f5a6c7f8f569e8c030e4806438ca49828e",
       "size": 24033705440,
@@ -164,8 +164,8 @@
       "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-MTP-Q8_0.gguf": {
-      "attempts": 0,
-      "last_error": null,
+      "attempts": 1,
+      "last_error": "shard worker produced no result artifact",
       "lfs": true,
       "sha256": "041c175f03b76adb70077ba470258f6b916ec4f5f066077377ef96396c3dd1d0",
       "size": 30239022560,
@@ -178,7 +178,7 @@
       "lfs": true,
       "sha256": "8440f2a076f149f65bf16975f3a08359936ba2658fc1827b51a30b717de49acb",
       "size": 18047255072,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-Q4_K_S.gguf": {
@@ -187,7 +187,7 @@
       "lfs": true,
       "sha256": "2ceb104ceef01e880e1e65ee300006482aa0068ca7753fb35ee06f5751f06654",
       "size": 17086169632,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-Q5_K_M.gguf": {
@@ -196,12 +196,12 @@
       "lfs": true,
       "sha256": "8b92b4cdd0a0cdd1bb12f6568a41ae12ad4f0d0818d12e89bf89ecb2c0876860",
       "size": 20730954272,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-Q5_K_S.gguf": {
-      "attempts": 0,
-      "last_error": null,
+      "attempts": 1,
+      "last_error": "shard worker produced no result artifact",
       "lfs": true,
       "sha256": "b82fcaddafbba7159e7168e9daa3f4e636a8b5a8c1654c84fdd6709698305bf1",
       "size": 20179468832,
@@ -214,7 +214,7 @@
       "lfs": true,
       "sha256": "f1e1b337fda4ec8e39974f69a385f970381488e9bb41d039d85959aeb5350457",
       "size": 23582384672,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-Q8_0.gguf": {
@@ -223,7 +223,7 @@
       "lfs": true,
       "sha256": "2fff409d4a22e0cb11fb0ecfafed1c669b9808f7e6bc499036c6e85297f14f4d",
       "size": 29787701792,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "README.md": {
@@ -232,7 +232,7 @@
       "lfs": false,
       "sha256": null,
       "size": 189686,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "__merge-mtpKEYS-with-finetune.py": {
@@ -241,7 +241,7 @@
       "lfs": false,
       "sha256": null,
       "size": 1699,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "ff711-benches.png": {
@@ -250,12 +250,12 @@
       "lfs": true,
       "sha256": "1e44778749408170e5bfce79aa431b5668618a8d43292454a7d0899f75aed5e7",
       "size": 273317,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "mmproj-BF16.gguf": {
-      "attempts": 0,
-      "last_error": null,
+      "attempts": 1,
+      "last_error": "shard worker produced no result artifact",
       "lfs": true,
       "sha256": "05353347512982ee62317b9d8c89372bc815f4b4043580e7ef3ad411ec1a1cd3",
       "size": 931146304,
@@ -263,8 +263,8 @@
       "verified": false
     },
     "mmproj-F16.gguf": {
-      "attempts": 0,
-      "last_error": null,
+      "attempts": 1,
+      "last_error": "shard worker produced no result artifact",
       "lfs": true,
       "sha256": "eacf610d1ee4bd5ed0197a0777dd8f4fceb8eefa27009067c7d496cb68fbde45",
       "size": 927607360,
@@ -277,7 +277,7 @@
       "lfs": true,
       "sha256": "fdc443e974cad1f61c45af1cfd5580855855ddce0d6c14cc500a5714c486ac1d",
       "size": 1842940480,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "valhalla.webp": {
@@ -286,7 +286,7 @@
       "lfs": true,
       "sha256": "010bce05f9f652093f5b1504f797e540a905871211572ddfc53a0e256d2f84aa",
       "size": 4336184,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     }
   },
@@ -294,8 +294,8 @@
   "repo_id": "DavidAU/Qwen3.6-27B-Fable-Fusion-711-Uncensored-Heretic-NM-DAU-NEO-MAX-MTP-GGUF",
   "revision": "ee5b7441ffe27869e1e5b4357733248d561c26b7",
   "safe_name": "DavidAU__Qwen3.6-27B-Fable-Fusion-711-Uncensored-Heretic-NM-DAU-NEO-MAX-MTP-GGUF",
-  "status": "planned",
+  "status": "uploading",
   "total_bytes": 465146849418,
   "total_files": 32,
-  "updated_utc": "2026-07-28T23:57:42Z"
+  "updated_utc": "2026-07-29T00:11:31Z"
 }
