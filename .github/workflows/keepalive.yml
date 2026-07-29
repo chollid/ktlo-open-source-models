@@ -1,0 +1,92 @@
+name: keepalive
+
+# GitHub automatically disables scheduled workflows on a PUBLIC repository after
+# 60 days with no repository activity. That is a real risk here: once both archives
+# are pulled and reclaimed, this repo goes quiet -- which is exactly the period we
+# are waiting months for a Kimi K3 abliteration to appear. A disabled watcher would
+# miss it silently.
+#
+# This runs monthly, commits a timestamp to create activity, and sends an ntfy
+# heartbeat. The heartbeat matters as much as the commit: GitHub's rule refers to
+# "repository activity" and it is not documented whether a bot push resets the
+# 60-day timer. So do not rely on the commit alone -- rely on noticing the monthly
+# ping STOP. Silence for two months means the schedule is dead and needs manually
+# re-enabling in the Actions tab.
+
+on:
+  schedule:
+    - cron: "0 12 1 * *" # 12:00 UTC on the 1st of each month
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: state-write # serialize with grab-collect and sweep so pushes cannot race
+  cancel-in-progress: false
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Record heartbeat and report archive status
+        id: beat
+        env:
+          NOTIFY_WEBHOOK: ${{ secrets.NOTIFY_WEBHOOK }}
+        run: |
+          set -euo pipefail
+          stamp=$(date -u +%FT%TZ)
+          mkdir -p state
+          printf '%s\n' "$stamp" > state/keepalive.txt
+
+          summary=$(python3 - <<'PY'
+          import json, pathlib
+          rows = []
+          d = pathlib.Path("state/jobs")
+          for p in sorted(d.glob("*.json")) if d.exists() else []:
+              j = json.loads(p.read_text())
+              rows.append(f"{j['safe_name']}: {j['status']} ({j['total_bytes']/1e9:.0f} GB)")
+          print("; ".join(rows) if rows else "no jobs tracked")
+          PY
+          )
+          echo "summary=$summary" >> "$GITHUB_OUTPUT"
+          echo "stamp=$stamp"     >> "$GITHUB_OUTPUT"
+
+          {
+            echo "## Keepalive heartbeat"
+            echo ""
+            echo "- timestamp: \`$stamp\`"
+            echo "- archives: $summary"
+            echo ""
+            echo "Scheduled workflows on public repos are disabled after 60 days"
+            echo "of inactivity. If these monthly heartbeats stop arriving, re-enable"
+            echo "the schedule in the Actions tab."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ -n "${NOTIFY_WEBHOOK:-}" ]; then
+            curl -s -X POST "$NOTIFY_WEBHOOK" \
+              -H "Title: Archive pipeline heartbeat" \
+              -H "Tags: heartbeat" \
+              -d "Alive $stamp. $summary" \
+              -o /dev/null -w "ntfy HTTP %{http_code}\n" || true
+          else
+            echo "NOTIFY_WEBHOOK unset; skipping heartbeat notification"
+          fi
+
+      - name: Commit activity marker
+        run: |
+          set -euo pipefail
+          git config user.name  "keepalive-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add state/keepalive.txt
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+          else
+            git commit -m "keepalive: ${{ steps.beat.outputs.stamp }}"
+            # Another workflow may have pushed since checkout; rebase and retry once.
+            git pull --rebase --quiet origin "${GITHUB_REF_NAME}" || true
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
