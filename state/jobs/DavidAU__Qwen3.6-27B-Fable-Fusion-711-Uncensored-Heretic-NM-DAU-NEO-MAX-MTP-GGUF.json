@@ -1,5 +1,5 @@
 {
-  "discovered_utc": "2026-07-29T08:28:27Z",
+  "discovered_utc": "2026-07-31T02:08:14Z",
   "files": {
     ".gitattributes": {
       "attempts": 0,
@@ -7,8 +7,8 @@
       "lfs": false,
       "sha256": null,
       "size": 4308,
-      "uploaded": true,
-      "verified": true
+      "uploaded": false,
+      "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-MTP-Q6_K.gguf": {
       "attempts": 0,
@@ -16,8 +16,8 @@
       "lfs": true,
       "sha256": "2e8a9bdb478cad4ad53a3b02568ed6f5a6c7f8f569e8c030e4806438ca49828e",
       "size": 24033705440,
-      "uploaded": true,
-      "verified": true
+      "uploaded": false,
+      "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-Q4_K_M.gguf": {
       "attempts": 0,
@@ -25,8 +25,8 @@
       "lfs": true,
       "sha256": "8440f2a076f149f65bf16975f3a08359936ba2658fc1827b51a30b717de49acb",
       "size": 18047255072,
-      "uploaded": true,
-      "verified": true
+      "uploaded": false,
+      "verified": false
     },
     "Qwen3.6-27B-Fable-Fus-711-UnHeretic-NM-DAU-NEO-MAX-NEO-Q6_K.gguf": {
       "attempts": 0,
@@ -34,17 +34,17 @@
       "lfs": true,
       "sha256": "f1e1b337fda4ec8e39974f69a385f970381488e9bb41d039d85959aeb5350457",
       "size": 23582384672,
-      "uploaded": true,
-      "verified": true
+      "uploaded": false,
+      "verified": false
     },
     "README.md": {
       "attempts": 0,
       "last_error": null,
       "lfs": false,
       "sha256": null,
-      "size": 190476,
-      "uploaded": true,
-      "verified": true
+      "size": 190527,
+      "uploaded": false,
+      "verified": false
     },
     "__merge-mtpKEYS-with-finetune.py": {
       "attempts": 0,
@@ -52,8 +52,8 @@
       "lfs": false,
       "sha256": null,
       "size": 1699,
-      "uploaded": true,
-      "verified": true
+      "uploaded": false,
+      "verified": false
     },
     "ff711-benches.png": {
       "attempts": 0,
@@ -61,8 +61,8 @@
       "lfs": true,
       "sha256": "1e44778749408170e5bfce79aa431b5668618a8d43292454a7d0899f75aed5e7",
       "size": 273317,
-      "uploaded": true,
-      "verified": true
+      "uploaded": false,
+      "verified": false
     },
     "mmproj-F16.gguf": {
       "attempts": 0,
@@ -70,8 +70,8 @@
       "lfs": true,
       "sha256": "eacf610d1ee4bd5ed0197a0777dd8f4fceb8eefa27009067c7d496cb68fbde45",
       "size": 927607360,
-      "uploaded": true,
-      "verified": true
+      "uploaded": false,
+      "verified": false
     },
     "valhalla.webp": {
       "attempts": 0,
@@ -79,16 +79,16 @@
       "lfs": true,
       "sha256": "010bce05f9f652093f5b1504f797e540a905871211572ddfc53a0e256d2f84aa",
       "size": 4336184,
-      "uploaded": true,
-      "verified": true
+      "uploaded": false,
+      "verified": false
     }
   },
   "priority": "abliterated",
   "repo_id": "DavidAU/Qwen3.6-27B-Fable-Fusion-711-Uncensored-Heretic-NM-DAU-NEO-MAX-MTP-GGUF",
-  "revision": "978fd2e783da18b40c3eca4d158c8db168d60828",
+  "revision": "072bcbe157216915519f91e74742f9dd8be3c29f",
   "safe_name": "DavidAU__Qwen3.6-27B-Fable-Fusion-711-Uncensored-Heretic-NM-DAU-NEO-MAX-MTP-GGUF",
-  "status": "verified",
-  "total_bytes": 66595758528,
+  "status": "planned",
+  "total_bytes": 66595758579,
   "total_files": 9,
-  "updated_utc": "2026-07-29T10:57:10Z"
+  "updated_utc": "2026-07-31T02:08:14Z"
 }
