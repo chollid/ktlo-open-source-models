@@ -1,0 +1,40 @@
+{
+  "discovered_utc": "2026-08-08T09:31:03Z",
+  "files": {
+    ".gitattributes": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 4844,
+      "uploaded": false,
+      "verified": false
+    },
+    "README.md": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 8471,
+      "uploaded": false,
+      "verified": false
+    },
+    "V5-UD-Q2_K_XL/SHA256SUMS.txt": {
+      "attempts": 0,
+      "last_error": null,
+      "lfs": false,
+      "sha256": null,
+      "size": 1995,
+      "uploaded": false,
+      "verified": false
+    }
+  },
+  "priority": "abliterated",
+  "repo_id": "audnai/penclaw-Kimi-K3.0-abliterated-GGUF",
+  "revision": "71cf3a4d3bbc81cb348bd738ae044f21d45585b3",
+  "safe_name": "audnai__penclaw-Kimi-K3.0-abliterated-GGUF",
+  "status": "failed",
+  "total_bytes": 15310,
+  "total_files": 3,
+  "updated_utc": "2026-08-08T09:31:04Z"
+}
