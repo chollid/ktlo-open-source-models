@@ -152,6 +152,44 @@ def test_sha_change_prepares_regrab_but_unchanged_sha_is_noop(monkeypatch):
     assert list_calls == []
 
 
+@pytest.mark.parametrize(
+    ("files", "maximum", "expected_reason"),
+    [
+        ([metadata("config.json", 5)], 10_000, "empty_weights"),
+        ([metadata("model.safetensors", 100)], 50, "size"),
+    ],
+)
+def test_blocked_revision_is_prepared_and_notified_only_once(
+    monkeypatch, files, maximum, expected_reason
+):
+    install_hf_mocks(monkeypatch, files)
+    notifications = []
+    monkeypatch.setattr(
+        watcher,
+        "notify",
+        lambda text, level="info": notifications.append((text, level)),
+    )
+
+    def prepare_and_notify(seen):
+        prepared, next_seen = watcher.prepare_jobs(
+            config(maximum=maximum), FakeApi([info()]), seen, "hf"
+        )
+        for item in prepared:
+            if item.payload is None:
+                watcher.notify(watcher._blocked_message(item), level="error")
+        return prepared, next_seen
+
+    first, next_seen = prepare_and_notify({})
+    second, final_seen = prepare_and_notify(next_seen)
+
+    assert len(first) == 1
+    assert first[0].block_reason == expected_reason
+    assert next_seen == {"org/Kimi-K3-Abliterated": SHA_NEW}
+    assert second == []
+    assert final_seen == next_seen
+    assert len(notifications) == 1
+
+
 def test_file_filter_keeps_exact_quant_and_always_keep():
     q4 = [
         metadata(f"Model-Q4_K_M-{part:05d}-of-00024.gguf")
@@ -259,7 +297,9 @@ def test_size_gate_saves_failed_job_notifies_top_ten_and_never_dispatches(
     assert saved["status"] == "failed"
     assert saved["total_bytes"] == sum(range(1, 13))
     assert [event[0] for event in events] == ["commit"]
-    assert json.loads(watcher.SEEN_PATH.read_text()) == {}
+    assert json.loads(watcher.SEEN_PATH.read_text()) == {
+        "org/Kimi-K3-Abliterated": SHA_NEW
+    }
     message = notifications[0][0]
     assert "post-filter total 78 bytes" in message
     assert "declared dtype: float8_e4m3fn" in message
@@ -385,7 +425,9 @@ def test_bf16_only_repo_fails_lists_dropped_weights_and_never_dispatches(
     assert set(saved["files"]) == {"config.json"}
     assert prepared[0].block_reason == "empty_weights"
     assert events == ["commit"]
-    assert json.loads(watcher.SEEN_PATH.read_text()) == {}
+    assert json.loads(watcher.SEEN_PATH.read_text()) == {
+        "org/Kimi-K3-Abliterated": SHA_NEW
+    }
     message = notifications[0][0]
     assert "no FP8 weights after filtering - appears BF16-only" in message
     assert "weights/BF16/model-00001-of-00002.safetensors" in message

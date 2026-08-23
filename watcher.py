@@ -404,11 +404,15 @@ def prepare_jobs(
                 and metadata["path"] not in filtered_weight_paths
             )
 
+            # Re-examination is keyed on a changed revision SHA, not elapsed time.
+            # Mid-upload file additions create a new SHA for the next poll; retrying
+            # an unchanged blocked revision would only repeat identical work.
             if not filtered_weight_paths:
                 # A metadata-only archive is not a model. Persist the failed job,
-                # but create no payload and do not advance seen.json.
+                # but create no payload.
                 job["status"] = "failed"
                 payload = None
+                next_seen[repo_id] = revision
                 block_reason: Literal["empty_weights", "size"] | None = (
                     "empty_weights"
                 )
@@ -416,6 +420,7 @@ def prepare_jobs(
                 # planned -> failed is a legal forward transition checked by save().
                 job["status"] = "failed"
                 payload = None
+                next_seen[repo_id] = revision
                 block_reason = "size"
             else:
                 payload = {
