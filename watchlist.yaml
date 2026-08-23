@@ -56,15 +56,6 @@ targets:
       include: ["*Q4_K_M*", "*Q4_K_S*", "*IQ4*"]
       exclude: []
     max_total_bytes: 2_000_000_000_000
-  - author: audnai
-    include: ["Kimi-K3"]
-    priority: abliterated
-    file_rules:
-      always_keep: ["*.json", "*.txt", "*.md", "*.model", "tokenizer*", "*.py"]
-      include: ["*Q4_K_M*", "*Q4_K_S*", "*IQ4*"]
-      exclude: []
-    max_total_bytes: 2_000_000_000_000
-
   - author: mlabonne
     include: ["Kimi-K3"]
     priority: abliterated
