@@ -12,6 +12,25 @@ targets:
       exclude: ["*bf16*", "*BF16*"]
     max_total_bytes: 4_000_000_000_000
 
+  # Preservation anchor: the upstream base every abliterated Qwen3.8 repo is
+  # derived from. priority "base" bypasses passes_gates on purpose - the gates
+  # look for "abliterat"/"heretic" in the repo id, which an upstream base never
+  # has. Empty include keeps every weight in each matching repo.
+  #
+  # _repo_matches is a substring test, so this necessarily matches BOTH
+  # Qwen/Qwen3.8-27B (BF16 master, 55.6 GB) and Qwen/Qwen3.8-27B-FP8 (30.9 GB).
+  # There is no repo-level exclude. Keeping both is deliberate: FP8 is the
+  # higher-downloaded artifact and is what vLLM actually serves, matching the
+  # FP8-over-BF16 preference already set for Kimi-K3 above.
+  - author: Qwen
+    include: ["Qwen3.8-27B"]
+    priority: base
+    file_rules:
+      always_keep: ["*.json", "*.txt", "*.md", "*.jinja", "*.model", "tokenizer*", "*.py"]
+      include: []
+      exclude: []
+    max_total_bytes: 80_000_000_000
+
   # Runnable artifacts: archive Q4_K_M only from each matching GGUF repo.
   - author: huihui-ai
     include: ["Kimi-K3"]
