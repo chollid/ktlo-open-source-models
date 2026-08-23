@@ -34,7 +34,7 @@
       "lfs": true,
       "sha256": "236d807b7577b66299120b60f3c8f7bdfb8a8ba72c08a9e57ddedbf009ce3da4",
       "size": 24826588064,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "Qwen3.8-27B-tensor_types-Q6_K_L.txt": {
@@ -78,8 +78,8 @@
   "repo_id": "huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF",
   "revision": "3914947714f95b4418735b6d40830cf9720f316f",
   "safe_name": "huihui-ai__Huihui-Qwen3.8-27B-abliterated-GGUF",
-  "status": "uploading",
+  "status": "verifying",
   "total_bytes": 77235826282,
   "total_files": 8,
-  "updated_utc": "2026-08-23T18:38:14Z"
+  "updated_utc": "2026-08-23T19:08:21Z"
 }
