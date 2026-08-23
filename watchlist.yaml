@@ -151,20 +151,6 @@ targets:
       exclude: ["*.gguf"]
     max_total_bytes: 80_000_000_000
 
-  # Archive request: Q6_K (plain NEO variant) + the F16 vision projector only.
-  # The repo ships 13 quant levels x 3 variants (465 GB); we want ~24.5 GB.
-  # mmproj is essential - without it the multimodal half of the model is unusable.
-  - author: DavidAU
-    include: ["Qwen3.6-27B-Fable-Fusion-711-Uncensored-Heretic-NM-DAU-NEO-MAX-MTP-GGUF"]
-    priority: abliterated
-    file_rules:
-      always_keep: ["*.json", "*.md", "*.jinja", "tokenizer*", "mmproj-F16.gguf"]
-      include: ["*NEO-MAX-NEO-Q6_K.gguf",
-                "*NEO-MAX-NEO-Q4_K_M.gguf",
-                "*NEO-MAX-NEO-MTP-Q6_K.gguf"]
-      exclude: []
-    max_total_bytes: 100_000_000_000
-
 quality_gates:
   min_downloads: 50
   require_method: ["heretic", "abliterat"]
