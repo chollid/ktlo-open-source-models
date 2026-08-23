@@ -111,6 +111,36 @@ targets:
       exclude: []
     max_total_bytes: 2_000_000_000_000
 
+  # Qwen3.8-27B abliterated (huihui-ai), dropped 2026-08-16. Base is Qwen/Qwen3.8-27B,
+  # 27.8B params, multimodal. Grabbing the BF16 safetensors master plus Q8_0/Q6_K
+  # runnables. Skipping the bf16 GGUF: it is a derivative of the master we already keep.
+  #
+  # ORDER IS LOAD-BEARING. _repo_matches is a case-insensitive substring test, so the
+  # bare name in the second target also matches the -GGUF repo. matched_this_poll lets
+  # whichever target appears first claim the repo, so the GGUF target must stay above
+  # the master target. Reordering these silently sends the GGUF repo down the
+  # safetensors rules, which excludes every weight and wedges it in a failed retry loop.
+  - author: huihui-ai
+    include: ["Huihui-Qwen3.8-27B-abliterated-GGUF"]
+    priority: abliterated
+    file_rules:
+      always_keep: ["*.json", "*.txt", "*.md", "*.jinja", "tokenizer*"]
+      # The _L suffixes are separate larger quants, not variants of these.
+      include: ["*Q8_0*", "*Q6_K*", "mmproj*"]
+      exclude: ["*Q8_0_L*", "*Q6_K_L*"]
+    max_total_bytes: 80_000_000_000
+
+  # BF16 safetensors master: the requantize-from-anything copy. All 18 shards or
+  # none - filter_repo_files raises SplitSetIntegrityError on a partial split set.
+  - author: huihui-ai
+    include: ["Huihui-Qwen3.8-27B-abliterated"]
+    priority: abliterated
+    file_rules:
+      always_keep: ["*.json", "*.txt", "*.md", "*.jinja", "tokenizer*"]
+      include: ["*.safetensors"]
+      exclude: ["*.gguf"]
+    max_total_bytes: 80_000_000_000
+
   # Archive request: Q6_K (plain NEO variant) + the F16 vision projector only.
   # The repo ships 13 quant levels x 3 variants (465 GB); we want ~24.5 GB.
   # mmproj is essential - without it the multimodal half of the model is unusable.
