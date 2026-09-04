@@ -12,11 +12,11 @@
     },
     "Huihui-Qwen3.8-27B-abliterated-Q6_K.gguf": {
       "attempts": 1,
-      "last_error": "SHA256 mismatch: streamed bytes differ from HF metadata",
+      "last_error": null,
       "lfs": true,
       "sha256": "a5c159519d7bdba523578977d649dbfc48f2e47277ec77edd77670003b5b2492",
       "size": 22430999840,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "Huihui-Qwen3.8-27B-abliterated-Q8_0.gguf": {
@@ -78,8 +78,8 @@
   "repo_id": "huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF",
   "revision": "6386362d3cc8dbcb895c485a772869bfac5352dc",
   "safe_name": "huihui-ai__Huihui-Qwen3.8-27B-abliterated-GGUF",
-  "status": "uploading",
+  "status": "verifying",
   "total_bytes": 77235827623,
   "total_files": 8,
-  "updated_utc": "2026-09-04T07:49:45Z"
+  "updated_utc": "2026-09-04T11:45:09Z"
 }
