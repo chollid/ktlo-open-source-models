@@ -1,23 +1,23 @@
 {
-  "discovered_utc": "2026-09-04T07:36:29Z",
+  "discovered_utc": "2026-09-05T07:16:56Z",
   "files": {
     ".gitattributes": {
       "attempts": 0,
       "last_error": null,
       "lfs": false,
       "sha256": null,
-      "size": 4140,
-      "uploaded": true,
-      "verified": true
+      "size": 4224,
+      "uploaded": false,
+      "verified": false
     },
     "Huihui-Qwen3.8-27B-abliterated-Q6_K.gguf": {
-      "attempts": 1,
+      "attempts": 0,
       "last_error": null,
       "lfs": true,
       "sha256": "a5c159519d7bdba523578977d649dbfc48f2e47277ec77edd77670003b5b2492",
       "size": 22430999840,
-      "uploaded": true,
-      "verified": true
+      "uploaded": false,
+      "verified": false
     },
     "Huihui-Qwen3.8-27B-abliterated-Q8_0.gguf": {
       "attempts": 0,
@@ -25,8 +25,8 @@
       "lfs": true,
       "sha256": "427b9416c2aba9d21da4e90ddac50a2bc8b6d0bfef675af3580a43aa38e000c3",
       "size": 29047084320,
-      "uploaded": true,
-      "verified": true
+      "uploaded": false,
+      "verified": false
     },
     "Huihui-Qwen3.8-27B-abliterated-UD-Q6_K_XL.gguf": {
       "attempts": 0,
@@ -34,8 +34,8 @@
       "lfs": true,
       "sha256": "236d807b7577b66299120b60f3c8f7bdfb8a8ba72c08a9e57ddedbf009ce3da4",
       "size": 24826588064,
-      "uploaded": true,
-      "verified": true
+      "uploaded": false,
+      "verified": false
     },
     "Qwen3.8-27B-tensor_types-Q6_K_L.txt": {
       "attempts": 0,
@@ -43,8 +43,8 @@
       "lfs": false,
       "sha256": null,
       "size": 123,
-      "uploaded": true,
-      "verified": true
+      "uploaded": false,
+      "verified": false
     },
     "Qwen3.8-27B-tensor_types-Q8_0_L.txt": {
       "attempts": 0,
@@ -52,8 +52,8 @@
       "lfs": false,
       "sha256": null,
       "size": 123,
-      "uploaded": true,
-      "verified": true
+      "uploaded": false,
+      "verified": false
     },
     "README.md": {
       "attempts": 0,
@@ -61,8 +61,8 @@
       "lfs": false,
       "sha256": null,
       "size": 5125,
-      "uploaded": true,
-      "verified": true
+      "uploaded": false,
+      "verified": false
     },
     "mmproj-model-bf16.gguf": {
       "attempts": 0,
@@ -70,16 +70,16 @@
       "lfs": true,
       "sha256": "c9a09064683620bea3d3bfed5d4462e1a97a7d2fff7e5045d6862a0a85eeb5b5",
       "size": 931145888,
-      "uploaded": true,
-      "verified": true
+      "uploaded": false,
+      "verified": false
     }
   },
   "priority": "abliterated",
   "repo_id": "huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF",
-  "revision": "6386362d3cc8dbcb895c485a772869bfac5352dc",
+  "revision": "751edd1f2fcddca4430aa2285453d4489e2fda89",
   "safe_name": "huihui-ai__Huihui-Qwen3.8-27B-abliterated-GGUF",
-  "status": "verified",
-  "total_bytes": 77235827623,
+  "status": "planned",
+  "total_bytes": 77235827707,
   "total_files": 8,
-  "updated_utc": "2026-09-04T16:29:38Z"
+  "updated_utc": "2026-09-05T07:16:56Z"
 }
