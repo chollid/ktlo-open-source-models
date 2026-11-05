@@ -768,11 +768,11 @@
     },
     "model-00075-of-000096.safetensors": {
       "attempts": 1,
-      "last_error": "SHA256 mismatch: streamed bytes differ from HF metadata",
+      "last_error": null,
       "lfs": true,
       "sha256": "5cb481011c961484cdff4b0847ea4969ee6692f714d83c0ec8fb1e8eff64069b",
       "size": 16990916912,
-      "uploaded": false,
+      "uploaded": true,
       "verified": false
     },
     "model-00076-of-000096.safetensors": {
@@ -1014,8 +1014,8 @@
   "repo_id": "moonshotai/Kimi-K3.1-Pro",
   "revision": "d9e99b0792a5e93b78ea9bea62a68167e36ddd9e",
   "safe_name": "moonshotai__Kimi-K3.1-Pro",
-  "status": "uploading",
+  "status": "verifying",
   "total_bytes": 1561355966953,
   "total_files": 112,
-  "updated_utc": "2026-11-05T10:58:16Z"
+  "updated_utc": "2026-11-05T12:08:45Z"
 }
