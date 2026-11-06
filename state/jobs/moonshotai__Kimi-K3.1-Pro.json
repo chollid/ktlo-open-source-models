@@ -8,7 +8,7 @@
       "sha256": null,
       "size": 1584,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "LICENSE": {
       "attempts": 0,
@@ -17,7 +17,7 @@
       "sha256": null,
       "size": 3077,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "README.md": {
       "attempts": 0,
@@ -26,7 +26,7 @@
       "sha256": null,
       "size": 47653,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "assets/kimi-logo.png": {
       "attempts": 0,
@@ -35,7 +35,7 @@
       "sha256": null,
       "size": 87988,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "config.json": {
       "attempts": 0,
@@ -44,7 +44,7 @@
       "sha256": null,
       "size": 7303,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "configuration_kimi_k3.py": {
       "attempts": 0,
@@ -53,7 +53,7 @@
       "sha256": null,
       "size": 11414,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "encoding_k3.py": {
       "attempts": 0,
@@ -62,7 +62,7 @@
       "sha256": null,
       "size": 26301,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "generation_config.json": {
       "attempts": 0,
@@ -71,7 +71,7 @@
       "sha256": null,
       "size": 53,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "kimi_k3_processor.py": {
       "attempts": 0,
@@ -80,7 +80,7 @@
       "sha256": null,
       "size": 7660,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "kimi_k3_vision_processing.py": {
       "attempts": 0,
@@ -89,7 +89,7 @@
       "sha256": null,
       "size": 6686,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "media_utils.py": {
       "attempts": 0,
@@ -98,7 +98,7 @@
       "sha256": null,
       "size": 13844,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00001-of-000096.safetensors": {
       "attempts": 0,
@@ -107,7 +107,7 @@
       "sha256": "7f60e41909fb16712100c311ca4402cc4e66ecc9dff9dad4ebc06f05106c58a1",
       "size": 2341216112,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00002-of-000096.safetensors": {
       "attempts": 0,
@@ -116,7 +116,7 @@
       "sha256": "3896d0f0d987abeb75f90ff0c047b9fb7faf3ff39a6e31cbd49a1358f48b7ffa",
       "size": 16990911504,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00003-of-000096.safetensors": {
       "attempts": 0,
@@ -125,7 +125,7 @@
       "sha256": "8db356979d0b5e4fdf16f13d56edee900261cc59d81395e498a52847518abf4c",
       "size": 16990911504,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00004-of-000096.safetensors": {
       "attempts": 0,
@@ -134,7 +134,7 @@
       "sha256": "01ca3a36220afc36a9f2891045c8c9d0e64fc2cd08fffe1b3851e24bd2a93a40",
       "size": 16582379656,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00005-of-000096.safetensors": {
       "attempts": 0,
@@ -143,7 +143,7 @@
       "sha256": "596fc235fe92c9656cbbd63eb719cd46f68b19e22d792224ef307c156f699682",
       "size": 16990911504,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00006-of-000096.safetensors": {
       "attempts": 0,
@@ -152,7 +152,7 @@
       "sha256": "a9f6a9d6682b2f5177553b9986bdc0774fe84a2181b76a6b7d7482de0ecf049b",
       "size": 16990911504,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00007-of-000096.safetensors": {
       "attempts": 0,
@@ -161,7 +161,7 @@
       "sha256": "ea268a3cb5978f50079ffd111d78d785bdd313fb9c7dafda8df0d841daeba4ab",
       "size": 16990911504,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00008-of-000096.safetensors": {
       "attempts": 0,
@@ -170,7 +170,7 @@
       "sha256": "e514e45c4a17a187657fbcd1d4f9eb6a0c33bcdbbe54049da391ed54ce57f60f",
       "size": 16582379656,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00009-of-000096.safetensors": {
       "attempts": 0,
@@ -179,7 +179,7 @@
       "sha256": "c5f9adff3d853bcf1e14c27bca0f1a74de985e7afb3149acd00eb2de3732ca12",
       "size": 16990911504,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00010-of-000096.safetensors": {
       "attempts": 0,
@@ -188,7 +188,7 @@
       "sha256": "ee9b1762da09dad17d6f8a22732645b070149266c40c3ae1e8ee90f48fec6742",
       "size": 16990911504,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00011-of-000096.safetensors": {
       "attempts": 0,
@@ -197,7 +197,7 @@
       "sha256": "0bb52ff6b774c289888854203726e0cd955fc650dda2f5cf9e4f825037f4af72",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00012-of-000096.safetensors": {
       "attempts": 0,
@@ -206,7 +206,7 @@
       "sha256": "2c2c9be2d6b722d75bec065e545826a88a8839b8100766442e7f476143e7ba44",
       "size": 16582385056,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00013-of-000096.safetensors": {
       "attempts": 0,
@@ -215,7 +215,7 @@
       "sha256": "bbf5db5833f4607cd201156229aa7f05183f70f2ffd2cf0ca8a6d781ee7f139c",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00014-of-000096.safetensors": {
       "attempts": 0,
@@ -224,7 +224,7 @@
       "sha256": "5f412b94c799903bc4b3694e662e6ef342bcc3712a3108a63b157bef16ec59df",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00015-of-000096.safetensors": {
       "attempts": 0,
@@ -233,7 +233,7 @@
       "sha256": "28e678ecfc2286eb86aa6dfe20df03bd7c8873b34d96f0b230d1aab64365a889",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00016-of-000096.safetensors": {
       "attempts": 0,
@@ -242,7 +242,7 @@
       "sha256": "896fd658f4cddad15eaca16ed54471ad265ad73d48d291bb4bb792767dc4d617",
       "size": 16582385056,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00017-of-000096.safetensors": {
       "attempts": 0,
@@ -251,7 +251,7 @@
       "sha256": "4b82b33835679910ad9f87ec4662e38f8dc111421fb2a56f538cec5be6c55b74",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00018-of-000096.safetensors": {
       "attempts": 0,
@@ -260,7 +260,7 @@
       "sha256": "db91d8251d9bc0f47e31fc18955e8428a6a1fa25460a5e54578e4b261660e3ef",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00019-of-000096.safetensors": {
       "attempts": 0,
@@ -269,7 +269,7 @@
       "sha256": "281ef055e54eff0c8ffacdf886e983ff27de43d002abf9aa97b663e9a3ae9ee7",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00020-of-000096.safetensors": {
       "attempts": 0,
@@ -278,7 +278,7 @@
       "sha256": "783cbb7d6056c0ad3f32b8f1c10c20e6b2d7e5356e0cfd6ce6123f43d3648e60",
       "size": 16582385056,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00021-of-000096.safetensors": {
       "attempts": 0,
@@ -287,7 +287,7 @@
       "sha256": "9774e732cae20192427c8777f79bd9a9fb7c9ef3bc71c2784a2f72e891e1b51e",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00022-of-000096.safetensors": {
       "attempts": 0,
@@ -296,7 +296,7 @@
       "sha256": "5e3f0905780d988b0fcb974479731e751f8bed319e22224f5f9d0ec76b1b755e",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00023-of-000096.safetensors": {
       "attempts": 0,
@@ -305,7 +305,7 @@
       "sha256": "69940e5bde762834f2731401194a8fb2c2784274890bd6d23e0c0aca91383451",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00024-of-000096.safetensors": {
       "attempts": 0,
@@ -314,7 +314,7 @@
       "sha256": "f48efe6ad27d75b51564a3de48ab312ee7c06969db35d7b2b764d9515c00b0a7",
       "size": 16582385056,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00025-of-000096.safetensors": {
       "attempts": 0,
@@ -323,7 +323,7 @@
       "sha256": "833a0f761b2944cde386def5bdb7dabbfdf30f2927dd26304d0f7723b4ff018c",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00026-of-000096.safetensors": {
       "attempts": 0,
@@ -332,7 +332,7 @@
       "sha256": "02bff688e36ec90942dcb3ece1bfc7f102fd3c78bffdabba79fd4ec4bedb9230",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00027-of-000096.safetensors": {
       "attempts": 0,
@@ -341,7 +341,7 @@
       "sha256": "4fe3e6f06b9c341d06eee45c0add2c7f8aff48a4c48bdcd97130c48c91b93202",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00028-of-000096.safetensors": {
       "attempts": 0,
@@ -350,7 +350,7 @@
       "sha256": "832b28d66ea0c9bca4b42c8b206463b3f8fa8cafd13d4118911604351c27dc22",
       "size": 16582385056,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00029-of-000096.safetensors": {
       "attempts": 0,
@@ -359,7 +359,7 @@
       "sha256": "bf8f4f4f10a3cbf72d95851232c17d20c58d44f024a8c4e421b344cb0f871659",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00030-of-000096.safetensors": {
       "attempts": 0,
@@ -368,7 +368,7 @@
       "sha256": "a974612d9f6300e9a86eb882e2c6dbad2446d491e15289b576acd015f1f69928",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00031-of-000096.safetensors": {
       "attempts": 0,
@@ -377,7 +377,7 @@
       "sha256": "aa227f8eddaf25975915e8a161446fb042e1db7bb176aafd29d4953f01a4e2dd",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00032-of-000096.safetensors": {
       "attempts": 0,
@@ -386,7 +386,7 @@
       "sha256": "4520a3321b8fd7e3f7da7c29afc084802af2f1498f8c96e5103fe4476b204957",
       "size": 16582385056,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00033-of-000096.safetensors": {
       "attempts": 0,
@@ -395,7 +395,7 @@
       "sha256": "32a8f004afb58539f28fe5333fef3e1604c60f2113bbe2e173c99502a0f0cd89",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00034-of-000096.safetensors": {
       "attempts": 0,
@@ -404,7 +404,7 @@
       "sha256": "4310c7808e7bf72506168fc1e521852ee95da94c6ee2f6ee6b8fa6b800c559c8",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00035-of-000096.safetensors": {
       "attempts": 0,
@@ -413,7 +413,7 @@
       "sha256": "5ba50bc47a6b48c057208b7e2ea5aaccb6e8ce27041402e469cbb18661858ce2",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00036-of-000096.safetensors": {
       "attempts": 0,
@@ -422,7 +422,7 @@
       "sha256": "5a64e3f0e0988dda1e568fcbf37d4f0a03493e536daff572a8d8378442ef26ec",
       "size": 16582385056,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00037-of-000096.safetensors": {
       "attempts": 0,
@@ -431,7 +431,7 @@
       "sha256": "43ab18d28759e45ba316e03423b2c0d447ebc7f8ffea7972c4634a7630349262",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00038-of-000096.safetensors": {
       "attempts": 0,
@@ -440,7 +440,7 @@
       "sha256": "a518377eff993b5b0b0337296072bb32a3ed249776b0c1459aaef20f9749fcf1",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00039-of-000096.safetensors": {
       "attempts": 0,
@@ -449,7 +449,7 @@
       "sha256": "0c693043cdf7910af15e649039a7bfd8e924b923f7224cc1222e0d56edd36358",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00040-of-000096.safetensors": {
       "attempts": 0,
@@ -458,7 +458,7 @@
       "sha256": "c5e62f355ede896136b7c425fc1c81e6ac0047ed61c50f121f360ed9959e74bb",
       "size": 16582385056,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00041-of-000096.safetensors": {
       "attempts": 0,
@@ -467,7 +467,7 @@
       "sha256": "5467de4bf7800406a595c87836ffedf5035f1246ec7ec09baeea481135221e6e",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00042-of-000096.safetensors": {
       "attempts": 0,
@@ -476,7 +476,7 @@
       "sha256": "f96acc33583215194c99f25af1bcbeef8256b5ad99eb825c049030812917a5a7",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00043-of-000096.safetensors": {
       "attempts": 0,
@@ -485,7 +485,7 @@
       "sha256": "c6b75c7c909f2cf34ebb1c094052ebc771575b79a2a6f2c3e1cf064c387603d5",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00044-of-000096.safetensors": {
       "attempts": 0,
@@ -494,7 +494,7 @@
       "sha256": "f403f8bcca8b30839407515134c16b0e6d0605ad5a1b45cb586206f36271c14c",
       "size": 16582385056,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00045-of-000096.safetensors": {
       "attempts": 0,
@@ -503,7 +503,7 @@
       "sha256": "f9be878defe6cd66660d7299a98aece70f224b17444dd513475a9d438d4db452",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00046-of-000096.safetensors": {
       "attempts": 0,
@@ -512,7 +512,7 @@
       "sha256": "a242c8b90256e28453138e1693f5f8aca76303ca2416a7370d3314ffbb010069",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00047-of-000096.safetensors": {
       "attempts": 0,
@@ -521,7 +521,7 @@
       "sha256": "6efb69aea07a4d81f4c7173051b0dfe65f6b936e905787663d4234329594b54c",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00048-of-000096.safetensors": {
       "attempts": 0,
@@ -530,7 +530,7 @@
       "sha256": "a70396c45aa464926b8cc99a415fee1c5fb07b0df070541e9d9eca994a4922ea",
       "size": 16582385056,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00049-of-000096.safetensors": {
       "attempts": 0,
@@ -539,7 +539,7 @@
       "sha256": "0fff54860869ed29793a7c7398e914f70babdddf5c9994c1b57012245169d896",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00050-of-000096.safetensors": {
       "attempts": 0,
@@ -548,7 +548,7 @@
       "sha256": "19181ab15f63e6debe603b5bb7b40cc7cbe7367ccfc0adecc13cdb9837b3784f",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00051-of-000096.safetensors": {
       "attempts": 0,
@@ -557,7 +557,7 @@
       "sha256": "e2ec567c0ae313944b0cd4058f8139630600138013cc109c61c9739b856ed7e3",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00052-of-000096.safetensors": {
       "attempts": 0,
@@ -566,7 +566,7 @@
       "sha256": "82fc278ee0ecb69f0a5954121f1446509d403f4c172e6346c4e16449893fb001",
       "size": 16582385056,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00053-of-000096.safetensors": {
       "attempts": 0,
@@ -575,7 +575,7 @@
       "sha256": "7c0d0e9c42b7533504908ee4d5d2f3cd7bfa4b692872413ebca1196376fd49cb",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00054-of-000096.safetensors": {
       "attempts": 0,
@@ -584,7 +584,7 @@
       "sha256": "19891780a0207b6697ea10a093a36ccc488b1ed409975c69c9a0f06c155d2841",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00055-of-000096.safetensors": {
       "attempts": 0,
@@ -593,7 +593,7 @@
       "sha256": "6bf65a7ee82eb936ccda65e3ba5615b02ad821ad49123195443a8fab99cc395a",
       "size": 16990916912,
       "uploaded": true,
-      "verified": false
+      "verified": true
     },
     "model-00056-of-000096.safetensors": {
       "attempts": 0,
@@ -1017,5 +1017,5 @@
   "status": "verifying",
   "total_bytes": 1561355966953,
   "total_files": 112,
-  "updated_utc": "2026-11-05T12:08:45Z"
+  "updated_utc": "2026-11-06T02:41:39Z"
 }
